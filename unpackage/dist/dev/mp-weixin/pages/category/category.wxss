@@ -1,0 +1,116 @@
+
+.header_img {
+	overflow: hidden;
+	position: absolute;
+	left: 0rpx;
+	top: 0rpx;
+	width: 750rpx;
+	height: 438rpx;
+	/* transform: rotate(180deg); 翻转*/
+	border-radius: 0rpx 0rpx 58rpx 58rpx;
+	background: #FAACA8;
+	-webkit-filter: blur(10rpx);
+	        filter: blur(10rpx);
+}
+.header_img_flower {
+	position: absolute;
+	left: 73rpx;
+	/* top: 500rpx; */
+	/* width: 20rpx;
+	height: 20rpx; */
+	/* opacity: 50%; */
+	/* filter: blur(10rpx); */
+}
+.sideBar {
+	position: fixed;
+	left: 15rpx;
+	top: 400rpx;
+	width: 200rpx;
+	height: 562rpx;
+	border-radius: 10px;
+	background: #FFFFFF;
+}
+.sideBar_trans button:first-child {
+	background-color: #FAACA8;
+	width: 152rpx;
+	height: 62rpx;
+	margin-top: 19rpx;
+	border-radius: 3px;
+	font-size: 26rpx;
+	font-weight: 900;
+	color: #ffffff;
+}
+.buttons button {
+	/* position: absolute; */
+	/* left: 23px;
+	top: 23px; */
+	width: 175rpx;
+	line-height: 70rpx;
+	margin-top: 25rpx;
+	border-radius: 3px;
+	background: #F0ECEC;
+	font-size: 28rpx;
+	color: #9E9E9E;
+}
+.content {
+	/* display: flex;*/
+	position: absolute;
+	top: 363rpx;
+	width: 750rpx;
+}
+.content_title {
+	/* position: absolute; */
+	margin-left: 233rpx;
+	/* top: 0rpx; */
+	width: 487rpx;
+	line-height: 121rpx;
+	border-radius: 9px;
+	background: #FFFFFF;
+	text-align: center;
+	font-size: 46rpx;
+	color: #9E9E9E;
+}
+.content_title_line {
+	position: absolute;
+	margin-left: 140rpx;
+	top: 98rpx;
+	width: 212rpx;
+	height: 0rpx;
+	border: 2rpx solid #FAACA8;
+}
+.content_main {
+	display: flex;
+	flex-wrap: wrap;
+	/* width: 775rpx; */
+	margin-bottom: 31rpx;
+	margin-left: 205rpx;
+}
+.content_main_item {
+	margin-top: 31rpx;
+	margin-left: 31rpx;
+	width: 230rpx;
+	height: 348rpx;
+	border-radius: 10px;
+	background: #FFFFFF;
+	overflow: hidden;
+	position: relative;
+}
+.content_main_item_image {
+	width: 100%;
+	height: 100%;
+	/* object-fit: inherit; */
+}
+.content_main_item_text {
+	width: inherit;
+	line-height: 60rpx;
+	/* background-color: #C8C7CC; */
+	/* opacity: 80%; */
+	background:rgba(200, 199, 204, 0.6);
+	position: absolute;
+	bottom: 0rpx;
+	text-align: center;
+	font-size: 36rpx;
+	color: #FFFFFF;
+	/* back-fliter: blur(10rpx); */
+}
+
