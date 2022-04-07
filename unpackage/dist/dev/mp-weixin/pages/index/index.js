@@ -183,12 +183,14 @@ var _default =
       value: "",
       tab_1: "猫猫",
       tab_2: "花花",
-      tabindex: 1 };
+      tabindex: 1,
+      list: "" };
 
   },
   methods: {
     changeselect: function changeselect(data) {
       this.tabindex = data;
+      this.getlist();
     },
     todetail: function todetail() {
       uni.navigateTo({
@@ -199,7 +201,28 @@ var _default =
       uni.navigateTo({
         url: '../../packageA/pages/science/science' });
 
-    } } };exports.default = _default;
+    },
+    getList: function getList()
+    {var _this = this;
+      this.$minApi.indexRecommand({ uid: 1, type: this.tabindex }).then(
+      function (res) {
+        _this.list = res;
+      }).catch(function (err) {
+        console.log(err);
+      });
+    },
+    search: function search() {var _this2 = this;
+      this.$minApi.indexRecommand({ uid: 1, information: this.value }).then(
+      function (res) {
+        _this2.list = res;
+      }).catch(function (err) {
+        console.log(err);
+      });
+    } },
+
+  mounted: function mounted() {
+    this.getList();
+  } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),

@@ -11,7 +11,7 @@
 		 	<input v-model:value="value" placeholder="Search cute" placeholder-style="color:rgba(158, 158, 158, 0.46);font-weight:500;">
 		 </view>
 		 </input>
-         <image src="../../static/search-button.png" class="search-button"></image>
+         <image @click="search()" src="../../static/search-button.png" class="search-button"></image>
 		 <image src="../../static/cat-icon.png" class="cat-bg"></image>
 		 <view class="tabs">
 			 <view @click="changeselect(1)">
@@ -51,12 +51,14 @@
 				value:"",
 				tab_1:"猫猫",
 				tab_2:"花花",
-				tabindex:1
+				tabindex:1,
+				list:""
 			}
 		},
 		methods: {
-			changeselect(data){
-				this.tabindex=data;
+             changeselect(data){
+			 	this.tabindex=data;
+				this.getlist();
 			},
             todetail(){
 				uni.navigateTo({	
@@ -67,8 +69,28 @@
 				uni.navigateTo({	
 					url: '../../packageA/pages/science/science'
 				})
+			},
+			getList()
+			{
+				this.$minApi.indexRecommand({uid:1,type:this.tabindex}).then(
+				res => {
+						this.list = res
+						}).catch(err => {
+							console.log(err)
+						})
+			},
+			search(){
+				this.$minApi.indexRecommand({uid:1,information:this.value}).then(
+				res => {
+						this.list = res
+						}).catch(err => {
+							console.log(err)
+						})
 			}
-		} 
+		},
+		 mounted(){
+              this.getList();
+		 }
 	}
 </script>
 
