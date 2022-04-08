@@ -268,18 +268,9 @@ var _default = { data: function data() {return { title: "猫猫信息", photo_ti
     previewImg: function previewImg(data) {uni.previewImage({ // 当前需要预览的图片
         current: "" + data, //所有图片
         urls: [data] });}, //点赞函数
-    islike: function islike() {var _this = this;_api.default.picLike({ uid: 1, pid: this.list.pid }).then(function (res) {if (res == "操作成功") {_this.list.pictureList[0].islike = !_this.list.pictureList[0].islike;console.log(_this.list.pictureList[0].islike);}}).catch(function (err) {console.log(err);});}, //分享
-    sharevx: function sharevx(data) {uni.share({ provider: "weixin", scene: "WXSceneSession", type: 0, href: "http://uniapp.dcloud.io/", title: "狮山图鉴", summary: "来一起看看狮山图鉴吧", imageUrl: data, success: function success(res) {console.log("success:" + JSON.stringify(res));}, fail: function fail(err) {console.log("fail:" + JSON.stringify(err));} });} }, onLoad: function onLoad(option) {var _this2 = this;this.tabindex = uni.getStorageSync('tabindex');if (this.tabindex == 1) {//获取猫咪详情
-      _api.default.catDetail({ uid: 1, pid: option.data }).then(function (res) {_this2.list = res;}).catch(function (err) {console.log(err);});} else {
-      //获取花花详情
-      _api.default.flowerDetail({ uid: 1, pid: option.data }).then(
-      function (res) {
-        _this2.list = res;
-      }).catch(function (err) {
-        console.log(err);
-      });
-    }
-  } };exports.default = _default;
+    islike: function islike() {var _this = this;_api.default.picLike({ uid: 1, pid: this.list.pid }).then(function (res) {if (res == "操作成功") {_this.list.pictureList[0].islike = !_this.list.pictureList[0].islike;console.log(_this.list.pictureList[0].islike);}}).catch(function (err) {console.log(err);});} }, onLoad: function onLoad(option) {var _this2 = this;this.tabindex = uni.getStorageSync('tabindex');if (this.tabindex == 1) {//获取猫咪详情
+      _api.default.catDetail({ uid: 1, pid: option.data }).then(function (res) {_this2.list = res;}).catch(function (err) {console.log(err);});} else {//获取花花详情
+      _api.default.flowerDetail({ uid: 1, pid: option.data }).then(function (res) {_this2.list = res;}).catch(function (err) {console.log(err);});}} };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),

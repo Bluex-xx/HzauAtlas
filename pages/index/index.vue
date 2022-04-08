@@ -12,7 +12,8 @@
 		 </view>
 		 </input>
          <image @click="search()" src="../../static/search-button.png" class="search-button"></image>
-		 <image src="../../static/cat-icon.png" class="cat-bg"></image>
+		 <image v-show="tabindex==1" src="../../static/cat-icon.png" class="cat-bg"></image>
+		 <image v-show="tabindex==2" src="../../static/flower-icon-banner.png" class="cat-bg"></image>
 		 <view class="tabs">
 			 <view @click="changeselect(1)">
 			 <image src="../../static/cat-icon-2.png" class="cat-icon"></image>

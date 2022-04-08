@@ -105,24 +105,6 @@ export default {
 						}).catch(err => {
 							console.log(err)
 						})
-			},
-			//分享
-			sharevx(data){
-				uni.share({
-					provider: "weixin",
-					scene: "WXSceneSession",
-					type: 0,
-					href: "http://uniapp.dcloud.io/",
-					title: "狮山图鉴",
-					summary: "来一起看看狮山图鉴吧",
-					imageUrl: data,
-					success: function (res) {
-						console.log("success:" + JSON.stringify(res));
-					},
-					fail: function (err) {
-						console.log("fail:" + JSON.stringify(err));
-					}
-				});
 			}
 		},
 		onLoad: function (option) {
