@@ -1,62 +1,64 @@
-import MinRequest from './MinRequest';
-const minRequest = new MinRequest();
-minRequest.setConfig((config) => {
-  config.baseURL = 'https://somecute.cn'
-  return config
-})
-export default {
-  // 这里统一管理api请求
-  apis: {
+import minRequest from './MinRequest';
+// const minRequest = new MinRequest();
+// minRequest.setConfig((config) => {
+//   config.baseURL = 'http://api.somecute.cn:8086/'
+//   return config
+// })
+
+// export default {
+//  //这里统一管理api请求
+const api = {
 	//首页推荐接口
-    indexRecommad(data) {
-      return minRequest.post('/picture/recommend',data);
-    },
+    indexRecommand(data){
+		return minRequest('picture/recommend', data, 'POST');
+	},
+    
 	//首页搜索接口
 	indexCatSearch(data){
-		return minRequest.post('/cat/search',data);
+		return minRequest('cat/search', data, 'POST');
 	},
 	indexFlowerSearch(data){
-		return minRequest.post('/flower/search',data);
+		return minRequest('flower/search', data, 'POST');
 	},
+	
 	//为照片点赞
 	picLike(data){
-		return minRequest.post('/picture/like',data)
+		return minRequest('picture/like', data, 'POST')
 	},
+	
 	//猫猫详情
 	catDetail(data){
-		return minRequest.post('/cat/catdetail',data);
+		return minRequest('cat/catdetail', data, 'POST');
 	},
+	
 	//花花详情
 	flowerDetail(data){
-		return minRequest.post('/flower/flowerdetail',data);
+		return minRequest('flower/flowerdetail', data, 'POST');
 	},
+	
 	//猫猫分类
 	catSort(){
-		return minRequest.post('cat/classifycolor');
+		return minRequest('cat/classifycolor', 'POST');
 	},
+	
 	//花花分类
 	//按花期分类
 	flowerSortState()
 	{ 
-	    return minRequest.post('/flower/classifyflorescence')	
+	    return minRequest('flower/classifyflorescence', 'POST')	
 	},
 	//按品种进行分类
 	flowerSortVariety()
 	{
-	    return minRequest.post('/flower/classifyvariety')		
+	    return minRequest('flower/classifyvariety', 'POST')		
 	},
+	
 	//返回用户喜欢的猫与花
 	userLikePic(data){
-		return minRequest.post('picture/user',data)
+		return minRequest('picture/user', data, 'POST')
 	}
   }
-}
-// 接口使用方法
-// Request () {
-// 		this.$minApi.indexRecommand({data}).then(res => {
-// 			this.res = res
-// 			console.log(res)
-// 		}).catch(err => {
-// 			console.log(err)
-// 		})
-// 	}
+// }
+
+// export const catSort = () => minRequest('cat/classifycolor', 'POST');
+export default api

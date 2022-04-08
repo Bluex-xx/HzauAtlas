@@ -32,17 +32,19 @@
 		 </view>
 	 </view>
 	 <view class="cat_list">
-	 	<view v-for="i in 8" class="cat_one">
-			<image @click="todetail" src="../../static/cat_img/2.jpg" class="cat_one_image" mode="aspectFill"></image>
+	 	<view v-for="i in list" class="cat_one">
+			<image @click="todetail" :src="i.store" class="cat_one_image" mode="aspectFill"></image>
 			<view class="cat_name">
-				小灰
+				名字
 			</view>
-			<image src="../../static/heart-icon-selected.png"  class="love"></image>
+			<image v-show="!i.islike" src="../../static/heart-icon.png"  class="love"></image>
+			<image v-show="i.islike" src="../../static/heart-icon-selected.png"  class="love"></image>
 	 	</view>
 	 </view>
 	</view>
 </template>
 <script>
+	import api from '@/api/api.js'
 	export default {
 		data() {
 			return {
@@ -56,10 +58,7 @@
 			}
 		},
 		methods: {
-             changeselect(data){
-			 	this.tabindex=data;
-				this.getlist();
-			},
+        
             todetail(){
 				uni.navigateTo({	
 					url: '../../packageA/pages/detail/detail'
@@ -72,20 +71,58 @@
 			},
 			getList()
 			{
-				this.$minApi.indexRecommand({uid:1,type:this.tabindex}).then(
+				api.indexRecommand({uid:1,type:this.tabindex}).then(
 				res => {
 						this.list = res
+						console.log(this.list)
 						}).catch(err => {
 							console.log(err)
 						})
 			},
 			search(){
-				this.$minApi.indexRecommand({uid:1,information:this.value}).then(
-				res => {
-						this.list = res
-						}).catch(err => {
-							console.log(err)
-						})
+				if(this.tabindex==1)
+				{
+					api.indexCatSearch({uid:1,information:this.value}).then(
+					res => {
+								if(res.length==0)
+								{
+									uni.showModal({
+										content: '没有搜到噢',
+										showCancel: false
+									});
+								}
+								else
+								{
+									this.list = res
+								}
+							 }).catch(err => {
+							 	console.log(err)
+							 })  
+					
+				}
+                else
+				{
+					api.indexFlowerSearch({uid:1,information:this.value}).then(
+					res => {
+								if(res.length==0)
+								{
+									uni.showModal({
+										content: '没有搜到噢',
+										showCancel: false
+									});
+								}
+								else
+								{
+									this.list = res
+								}
+							}).catch(err => {
+								console.log(err)
+							})
+				}
+			},
+			changeselect(data){
+			 	this.tabindex=data;
+				this.getList(data);
 			}
 		},
 		 mounted(){
