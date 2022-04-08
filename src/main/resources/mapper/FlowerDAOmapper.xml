@@ -8,11 +8,11 @@
     </select>
 
     <select id="flowerdetail" parameterType="Picture" resultType="Flower">
-        select f.*,p.* from flower f,picture p where pid=#{pid} and p.fid=f.fid
+        select f.*,p.* from flower f,picture p where p.pid=#{pid} and p.fid=f.fid
     </select>
 
     <select id="search" parameterType="Picture" resultType="Flower">
-        select * from flower where variety like concat('%',#{information},'%')
+        select * from flower where name like concat('%',#{information},'%')
                              or florescence like concat('%',#{information},'%')
                              or department like concat('%',#{information},'%')
                              or allegory like concat('%',#{information},'%')
@@ -23,7 +23,7 @@
         <result property="florescence" column="florescence"></result>
         <result property="fid" column="fid"></result>
         <collection property="flowerList" ofType="com.atlas.entity.Flower">
-            <result property="variety" column="variety"></result>
+            <result property="name" column="name"></result>
             <result property="department" column="department"></result>
             <result property="allegory" column="allegory"></result>
             <collection property="picture" select="findpicture" column="fid"></collection>
@@ -31,8 +31,8 @@
     </resultMap>
 
     <resultMap id="variety" type="com.atlas.entity.Flower">
-        <id property="variety" column="variety"></id>
-        <result property="variety" column="variety"></result>
+        <id property="name" column="name"></id>
+        <result property="name" column="name"></result>
         <result property="fid" column="fid"></result>
         <collection property="flowerList" ofType="com.atlas.entity.Flower">
             <result property="florescence" column="florescence"></result>

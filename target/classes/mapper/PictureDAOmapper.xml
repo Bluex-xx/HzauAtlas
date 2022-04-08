@@ -12,11 +12,11 @@
     </update>
 
     <select id="recommendcat" resultType="Picture">
-        select * from picture where fid is null order by liked desc
+        select p.*,c.name from picture p,cat c where p.cid=c.cid and p.fid is null order by p.liked desc limit 15
     </select>
 
     <select id="recommendflower" resultType="Picture">
-        select * from picture where cid is null order by liked desc
+        select p.*,f.name from picture p,flower f where p.fid=f.fid and p.cid is null order by p.liked desc limit 15
     </select>
 
     <select id="catdetail" parameterType="Integer" resultType="Picture">

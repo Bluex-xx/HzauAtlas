@@ -11,7 +11,7 @@ import java.util.List;
 @ToString
 public class Flower {
     private Integer fid;
-    private String variety;
+    private String name;
     private String florescence;
     private String department;
     private String allegory;

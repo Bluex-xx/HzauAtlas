@@ -26,4 +26,6 @@ public class Picture {
     private String information;
     @Transient
     private Integer type;
+    @Transient
+    private String name;
 }
