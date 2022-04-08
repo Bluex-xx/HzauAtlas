@@ -3,9 +3,15 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.atlas.dao.CatDAO">
-    <select id="recommend" resultType="Cat">
-        select * from cat order by rand() limit 10
+    <select id="recommend" resultMap="Catr">
+        select * from cat order by rand() limit 16
     </select>
+
+    <resultMap id="Catr" type="com.atlas.entity.Cat">
+        <id column="cid" property="cid"></id>
+        <result column="name" property="name"></result>
+        <collection property="picture" select="findpicture" column="cid"></collection>
+    </resultMap>
 
     <select id="catdetail" parameterType="Picture" resultType="Cat">
         select c.*,p.* from cat c,picture p where pid=#{pid} and p.cid=c.cid
@@ -18,20 +24,22 @@
     </select>
 
     <resultMap id="gbcolor" type="com.atlas.entity.Cat">
-        <id property="color" column="color"></id>
+        <id property="cid" column="cid"></id>
         <result property="color" column="color"></result>
         <result property="cid" column="cid"></result>
-        <collection property="catList" ofType="com.atlas.entity.Cat">
-            <result property="name" column="name"></result>
-            <collection property="picture" select="findpicture" column="cid"></collection>
-        </collection>
+        <result property="name" column="name"></result>
+        <collection property="picture" select="findpicture" column="cid"></collection>
     </resultMap>
 
     <select id="findpicture" resultType="Picture">
         select * from picture where cid=#{cid} order by rand() limit 1
     </select>
 
-    <select id="findall" resultMap="gbcolor">
-        select c.*  from cat c
+    <select id="findall" parameterType="Cat" resultMap="gbcolor">
+        select c.*  from cat c where color=#{color}
+    </select>
+
+    <select id="findcolor" resultType="String">
+        select distinct color from cat
     </select>
 </mapper>

@@ -2,6 +2,7 @@ package com.atlas.service.Impl;
 
 import cn.hutool.core.util.BooleanUtil;
 import com.atlas.dao.PictureDAO;
+import com.atlas.entity.Cat;
 import com.atlas.entity.Picture;
 import com.atlas.service.PictureService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
 import java.util.Set;
 
@@ -28,13 +30,13 @@ public class PictureServiceImpl implements PictureService {
     }
 
     @Override
-    public List<Picture> recommendcat() {
-        return pictureDAO.recommendcat();
+    public List<Picture> recommendcat(List<Integer> integerList) {
+        return pictureDAO.recommendcat(integerList);
     }
 
     @Override
-    public List<Picture> recommendflower() {
-        return pictureDAO.recommendflower();
+    public List<Picture> recommendflower(List<Integer> integerList) {
+        return pictureDAO.recommendflower(integerList);
     }
 
     @Override
@@ -56,4 +58,15 @@ public class PictureServiceImpl implements PictureService {
     public List<Picture> findbypidflower(List<String> stringList) {
         return pictureDAO.findbypidflower(stringList);
     }
+
+    @Override
+    public List<Integer> findcid() {
+        return pictureDAO.findcid();
+    }
+
+    @Override
+    public List<Integer> findfid() {
+        return pictureDAO.findfid();
+    }
+
 }

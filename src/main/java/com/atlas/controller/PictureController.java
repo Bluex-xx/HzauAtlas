@@ -1,6 +1,7 @@
 package com.atlas.controller;
 
 import cn.hutool.core.util.BooleanUtil;
+import com.atlas.entity.Cat;
 import com.atlas.entity.Picture;
 import com.atlas.service.Impl.PictureServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -64,10 +66,16 @@ public class PictureController {
     @PostMapping("/recommend")
     public List<Picture> recommend(@RequestBody Picture picture){
         List<Picture> pictureList=new ArrayList<>();
+        List<Integer> idList=new ArrayList<>();
         if(picture.getType()==1){
-            pictureList= pictureService.recommendcat();
+            idList= pictureService.findcid();
+            System.out.println(idList);
+            pictureList=pictureService.recommendcat(idList);
+            //pictureList= pictureService.recommendcat();
         }else{
-            pictureList= pictureService.recommendflower();
+            idList= pictureService.findfid();
+            pictureList=pictureService.recommendflower(idList);
+           // pictureList= pictureService.recommendflower();
         }
         //System.out.println(pictureList);
         pictureList.forEach(picture1 -> {

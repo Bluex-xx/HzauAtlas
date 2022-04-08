@@ -31,12 +31,22 @@ public class FlowerServiceImpl implements FlowerService {
     }
 
     @Override
-    public List<Flower> classifyvariety() {
-        return flowerDAO.classifyvariety();
+    public List<Flower> classifyvariety(Flower flower) {
+        return flowerDAO.classifyvariety(flower);
     }
 
     @Override
-    public List<Flower> classifyflorescence() {
-        return flowerDAO.classifyflorescence();
+    public List<Flower> classifyflorescence(Flower flower) {
+        return flowerDAO.classifyflorescence(flower);
+    }
+
+    @Override
+    public List<String> findflorescence() {
+        return flowerDAO.findflorescence();
+    }
+
+    @Override
+    public List<String> findvariety() {
+        return flowerDAO.findvariety();
     }
 }

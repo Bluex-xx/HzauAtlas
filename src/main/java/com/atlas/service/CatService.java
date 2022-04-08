@@ -9,5 +9,6 @@ public interface CatService {
     List<Cat> recommend();
     Cat catdetail(Picture picture);
     List<Cat> search(Picture picture);
-    List<Cat> findall();
+    List<Cat> findall(Cat cat);
+    List<String> findcolor();
 }

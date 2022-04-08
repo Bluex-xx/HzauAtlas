@@ -67,14 +67,28 @@ public class FlowerController {
     //分类界面花期
     @ResponseBody
     @PostMapping("/classifyflorescence")
-    public List<Flower> classifyflorescence(){
-        return flowerService.classifyflorescence();
+    public List<Flower> classifyflorescence(@RequestBody Flower flower){
+        return flowerService.classifyflorescence(flower);
     }
 
     //分类界面品种
     @ResponseBody
     @PostMapping("/classifyvariety")
-    public List<Flower> classifyvariety(){
-        return flowerService.classifyvariety();
+    public List<Flower> classifyvariety(@RequestBody Flower flower){
+        return flowerService.classifyvariety(flower);
+    }
+
+    //分类品种
+    @ResponseBody
+    @PostMapping("/findvariety")
+    public List<String> findvariety(){
+        return flowerService.findvariety();
+    }
+
+    //分类花期
+    @ResponseBody
+    @PostMapping("/findflorescence")
+    public List<String> findflorescence(){
+        return flowerService.findflorescence();
     }
 }

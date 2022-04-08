@@ -9,6 +9,8 @@ public interface FlowerService {
     List<Flower> recommend();
     Flower flowerdetail(Picture picture);
     List<Flower> search(Picture picture);
-    List<Flower> classifyvariety();
-    List<Flower> classifyflorescence();
+    List<Flower> classifyvariety(Flower flower);
+    List<Flower> classifyflorescence(Flower flower);
+    List<String> findflorescence();
+    List<String> findvariety();
 }

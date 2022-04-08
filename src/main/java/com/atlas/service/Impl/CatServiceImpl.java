@@ -30,7 +30,12 @@ public class CatServiceImpl implements CatService {
     }
 
     @Override
-    public List<Cat> findall() {
-        return catDAO.findall();
+    public List<Cat> findall(Cat cat) {
+        return catDAO.findall(cat);
+    }
+
+    @Override
+    public List<String> findcolor() {
+        return catDAO.findcolor();
     }
 }

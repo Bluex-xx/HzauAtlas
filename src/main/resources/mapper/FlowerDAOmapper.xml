@@ -3,9 +3,15 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.atlas.dao.FlowerDAO">
-    <select id="recommend" resultType="Flower">
+    <select id="recommend" resultMap="Flowerr">
         select * from flower order by rand() limit 1
     </select>
+
+    <resultMap id="Flowerr" type="com.atlas.entity.Flower">
+        <id column="fid" property="fid"></id>
+        <result column="name" property="name"></result>
+        <collection property="picture" select="findpicture" column="fid"></collection>
+    </resultMap>
 
     <select id="flowerdetail" parameterType="Picture" resultType="Flower">
         select f.*,p.* from flower f,picture p where p.pid=#{pid} and p.fid=f.fid
@@ -19,38 +25,42 @@
     </select>
 
     <resultMap id="florescence" type="com.atlas.entity.Flower">
-        <id property="florescence" column="florescence"></id>
+        <id property="fid" column="fid"></id>
         <result property="florescence" column="florescence"></result>
         <result property="fid" column="fid"></result>
-        <collection property="flowerList" ofType="com.atlas.entity.Flower">
-            <result property="name" column="name"></result>
-            <result property="department" column="department"></result>
-            <result property="allegory" column="allegory"></result>
-            <collection property="picture" select="findpicture" column="fid"></collection>
-        </collection>
+        <result property="name" column="name"></result>
+        <result property="department" column="department"></result>
+        <result property="allegory" column="allegory"></result>
+        <collection property="picture" select="findpicture" column="fid"></collection>
     </resultMap>
 
     <resultMap id="variety" type="com.atlas.entity.Flower">
-        <id property="name" column="name"></id>
+        <id property="fid" column="fid"></id>
         <result property="name" column="name"></result>
         <result property="fid" column="fid"></result>
-        <collection property="flowerList" ofType="com.atlas.entity.Flower">
-            <result property="florescence" column="florescence"></result>
-            <result property="department" column="department"></result>
-            <result property="allegory" column="allegory"></result>
-            <collection property="picture" select="findpicture" column="fid"></collection>
-        </collection>
+        <result property="florescence" column="florescence"></result>
+        <result property="department" column="department"></result>
+        <result property="allegory" column="allegory"></result>
+        <collection property="picture" select="findpicture" column="fid"></collection>
     </resultMap>
 
     <select id="findpicture" resultType="Picture">
         select * from picture where fid=#{fid} order by rand() limit 1
     </select>
 
-    <select id="classifyflorescence" resultMap="florescence">
-        select f.*  from flower f
+    <select id="classifyflorescence" parameterType="Flower" resultMap="florescence">
+        select f.*  from flower f where florescence=#{florescence}
     </select>
 
-    <select id="classifyvariety" resultMap="variety">
-        select f.*  from flower f
+    <select id="classifyvariety" parameterType="Flower" resultMap="variety">
+        select f.*  from flower f where name=#{name}
+    </select>
+
+    <select id="findflorescence" resultType="String">
+        select distinct florescence from flower
+    </select>
+
+    <select id="findvariety" resultType="String">
+        select distinct name from flower
     </select>
 </mapper>

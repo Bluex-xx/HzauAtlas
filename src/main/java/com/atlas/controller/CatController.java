@@ -82,8 +82,15 @@ public class CatController {
     //分类界面
     @ResponseBody
     @PostMapping("/classifycolor")
-    public List<Cat> findall(){
-        return catService.findall();
+    public List<Cat> findall(@RequestBody Cat cat){
+        return catService.findall(cat);
+    }
+
+    //返回所有花色
+    @ResponseBody
+    @PostMapping("/findcolor")
+    public List<String> findcolor(){
+        return catService.findcolor();
     }
 
 }
