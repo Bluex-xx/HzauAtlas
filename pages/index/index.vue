@@ -32,13 +32,13 @@
 		 </view>
 	 </view>
 	 <view class="cat_list">
-	 	<view v-for="i in list" class="cat_one">
-			<image @click="todetail" :src="i.store" class="cat_one_image" mode="aspectFill"></image>
+	 	<view v-for="(i,index) in list" class="cat_one">
+			<image @click="todetail(i.pid,tabindex)" :src="i.store" class="cat_one_image" mode="aspectFill"></image>
 			<view class="cat_name">
-				名字
+				{{i.name}}
 			</view>
-			<image v-show="!i.islike" src="../../static/heart-icon.png"  class="love"></image>
-			<image v-show="i.islike" src="../../static/heart-icon-selected.png"  class="love"></image>
+			<image @click="islike(i.pid,index)" v-show="!i.islike" src="../../static/heart-icon.png"  class="love"></image>
+			<image @click="islike(i.pid,index)" v-show="i.islike" src="../../static/heart-icon-selected.png"  class="love"></image>
 	 	</view>
 	 </view>
 	</view>
@@ -58,10 +58,10 @@
 			}
 		},
 		methods: {
-        
-            todetail(){
+            //跳转详情页
+            todetail(data){
 				uni.navigateTo({	
-					url: '../../packageA/pages/detail/detail'
+					url: "../../packageA/pages/detail/detail?data="+data
 				})
 			},
 			toscience(){
@@ -69,12 +69,12 @@
 					url: '../../packageA/pages/science/science'
 				})
 			},
+			//获取首页数据
 			getList()
 			{
 				api.indexRecommand({uid:1,type:this.tabindex}).then(
 				res => {
 						this.list = res
-						console.log(this.list)
 						}).catch(err => {
 							console.log(err)
 						})
@@ -82,6 +82,7 @@
 			search(){
 				if(this.tabindex==1)
 				{
+					//搜索猫猫
 					api.indexCatSearch({uid:1,information:this.value}).then(
 					res => {
 								if(res.length==0)
@@ -102,6 +103,7 @@
 				}
                 else
 				{
+					//搜索花花
 					api.indexFlowerSearch({uid:1,information:this.value}).then(
 					res => {
 								if(res.length==0)
@@ -120,13 +122,28 @@
 							})
 				}
 			},
+			//导航切换
 			changeselect(data){
 			 	this.tabindex=data;
 				this.getList(data);
+				uni.setStorageSync('tabindex', this.tabindex);
+			},
+			//照片点赞
+			islike(data,id){
+				api.picLike({uid:1,pid:data}).then(
+				res => {
+						if(res=="操作成功")
+						{
+							this.list[id].islike=!this.list[id].islike;
+						}
+						}).catch(err => {
+							console.log(err)
+						})
 			}
 		},
 		 mounted(){
               this.getList();
+			  this.changeselect(1);
 		 }
 	}
 </script>
