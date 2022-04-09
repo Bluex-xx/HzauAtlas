@@ -26,7 +26,7 @@
 						<!-- <image class="content_item_like" src="../../../static/heart-icon-selected.png" mode="aspectFit"></image> -->
 					</view>
 					
-					<image class="content_item_more"src="../../../static/more.png" mode="aspectFit" @click="toDetail(item.picture.pid)"></image>
+					<image class="content_item_more"src="../../../static/more.png" mode="aspectFit" @click="toDetail(item)"></image>
 				</view>
 				
 			</scroll-view>
@@ -66,6 +66,8 @@
 				}
 			}
 			else {
+				uni.setStorageSync('categoryindex', 2)
+				
 				if(uni.getStorageSync('categoryitem') == '花期') {
 					api.flowerSortState({florescence: option.data}).then(res => {
 						this.categoryTitle = option.data
@@ -73,7 +75,7 @@
 					})
 				}
 				else if(uni.getStorageSync('categoryitem') == '品种') {
-					api.flowerSortVariety({variety: option.data}).then(res => {
+					api.flowerSortVariety({department: option.data}).then(res => {
 						this.categoryTitle = option.data
 						this.categoryList = res
 					})
@@ -88,8 +90,16 @@
 				})
 			},
 			toDetail(data) {
+				let id = ''
+				if(uni.getStorageSync('categoryindex') == 1) {
+						id = data.picture.pid
+						// id = data.cid
+					}
+					else {
+						id = data.picture.pid
+					}
 				uni.navigateTo({
-					url:'../detail/detail?data='+data
+					url:'../detail/detail?data='+id
 				})
 			},
 			previewImg(data){

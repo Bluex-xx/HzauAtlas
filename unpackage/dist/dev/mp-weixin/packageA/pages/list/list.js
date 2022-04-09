@@ -203,9 +203,11 @@ var _api = _interopRequireDefault(__webpack_require__(/*! @/api/api.js */ 16));f
 //
 //
 //
-var _default = { data: function data() {return { scrollTop: 0, old: { scrollTop: 0 }, categoryTitle: '纯色', categoryList: [{ cid: '1', name: '名称1', picture: { pid: '1', store: 'https://img-1254085044.cos.ap-nanjing.myqcloud.com/static/flower_list.jpg' } }] };}, onLoad: function onLoad(option) {var _this = this;if (uni.getStorageSync('categoryindex') == 1) {if (uni.getStorageSync('categoryitem') == '毛色') {_api.default.catSort({ color: option.data }).then(function (res) {_this.categoryTitle = option.data;_this.categoryList = res;});}} else {if (uni.getStorageSync('categoryitem') == '花期') {_api.default.flowerSortState({ florescence: option.data }).then(function (res) {_this.categoryTitle = option.data;_this.categoryList = res;});} else
+var _default = { data: function data() {return { scrollTop: 0, old: { scrollTop: 0 }, categoryTitle: '纯色', categoryList: [{ cid: '1', name: '名称1', picture: { pid: '1', store: 'https://img-1254085044.cos.ap-nanjing.myqcloud.com/static/flower_list.jpg' } }] };}, onLoad: function onLoad(option) {var _this = this;if (uni.getStorageSync('categoryindex') == 1) {if (uni.getStorageSync('categoryitem') == '毛色') {_api.default.catSort({ color: option.data }).then(function (res) {_this.categoryTitle = option.data;_this.categoryList = res;});}} else {uni.setStorageSync('categoryindex', 2);if (uni.getStorageSync('categoryitem') == '花期') {_api.default.flowerSortState({ florescence: option.data }).then(function (res) {_this.categoryTitle = option.data;_this.categoryList = res;
+        });
+      } else
       if (uni.getStorageSync('categoryitem') == '品种') {
-        _api.default.flowerSortVariety({ variety: option.data }).then(function (res) {
+        _api.default.flowerSortVariety({ department: option.data }).then(function (res) {
           _this.categoryTitle = option.data;
           _this.categoryList = res;
         });
@@ -220,8 +222,16 @@ var _default = { data: function data() {return { scrollTop: 0, old: { scrollTop:
 
     },
     toDetail: function toDetail(data) {
+      var id = '';
+      if (uni.getStorageSync('categoryindex') == 1) {
+        id = data.picture.pid;
+        // id = data.cid
+      } else
+      {
+        id = data.picture.pid;
+      }
       uni.navigateTo({
-        url: '../detail/detail?data=' + data });
+        url: '../detail/detail?data=' + id });
 
     },
     previewImg: function previewImg(data) {
