@@ -33,14 +33,24 @@
 		 </view>
 	 </view>
 	 <view class="cat_list">
-	 	<view v-for="(i,index) in list" class="cat_one">
-			<image @click="todetail(i.pid,tabindex)" :src="i.store" class="cat_one_image" mode="aspectFill"></image>
+	 	<view v-if="searchstate==0" v-for="(i,index) in list" class="cat_one">
+			<image @click="todetail(i.picture.pid,tabindex)" :src="i.picture.store" class="cat_one_image" mode="aspectFill"></image>
 			<view class="cat_name">
-				{{i.name}}
+				{{i.picture.name}}
 			</view>
-			<image @click="islike(i.pid,index)" v-show="!i.islike" src="../../static/heart-icon.png"  class="love"></image>
-			<image @click="islike(i.pid,index)" v-show="i.islike" src="../../static/heart-icon-selected.png"  class="love"></image>
+			<image @click="islike(i.picture.pid,index)" v-show="!i.picture.islike" src="../../static/heart-icon.png"  class="love"></image>
+			<image @click="islike(i.picture.pid,index)" v-show="i.picture.islike" src="../../static/heart-icon-selected.png"  class="love"></image>
 	 	</view>
+		<view v-if="searchstate==1" v-for="(i,index) in list" class="cat_one">
+					<image @click="todetail(i.pid,tabindex)" :src="i.store" class="cat_one_image" mode="aspectFill"></image>
+					<view class="cat_name">
+						{{i.name}}
+					</view>
+					<image @click="islike(i.pid,index)" v-show="!i.islike" src="../../static/heart-icon.png"  class="love"></image>
+					<image @click="islike(i.pid,index)" v-show="i.islike" src="../../static/heart-icon-selected.png"  class="love"></image>
+			</view>
+	 </view>
+
 	 </view>
 	</view>
 </template>
@@ -55,7 +65,10 @@
 				tab_1:"猫猫",
 				tab_2:"花花",
 				tabindex:1,
-				list:""
+				searchstate:0,
+				list:{
+					picture:""
+				}
 			}
 		},
 		methods: {
@@ -95,7 +108,9 @@
 								}
 								else
 								{
-									this.list = res
+									this.list = res;
+									console.log(this.list);
+									this.searchstate=1;
 								}
 							 }).catch(err => {
 							 	console.log(err)
@@ -126,6 +141,7 @@
 			//导航切换
 			changeselect(data){
 			 	this.tabindex=data;
+				this.searchstate=0;
 				this.getList(data);
 				uni.setStorageSync('tabindex', this.tabindex);
 			},
@@ -135,7 +151,14 @@
 				res => {
 						if(res=="操作成功")
 						{
-							this.list[id].islike=!this.list[id].islike;
+							if(this.searchstate==0)
+							{
+								this.list[id].picture.islike=!this.list[id].picture.islike;
+							}
+                            else
+							{
+								this.list[id].islike=!this.list[id].islike;
+							}
 						}
 						}).catch(err => {
 							console.log(err)
