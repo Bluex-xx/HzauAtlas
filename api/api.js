@@ -9,48 +9,57 @@ import minRequest from './MinRequest';
 //  //这里统一管理api请求
 const api = {
 	//首页推荐接口
-    indexRecommand(data){
+    indexRecommand(data) {
 		return minRequest('picture/recommend', data, 'POST');
 	},
     
 	//首页搜索接口
-	indexCatSearch(data){
+	indexCatSearch(data) {
 		return minRequest('cat/search', data, 'POST');
 	},
-	indexFlowerSearch(data){
+	indexFlowerSearch(data) {
 		return minRequest('flower/search', data, 'POST');
 	},
 	
 	//为照片点赞
-	picLike(data){
+	picLike(data) {
 		return minRequest('picture/like', data, 'POST')
 	},
 	
 	//猫猫详情
-	catDetail(data){
+	catDetail(data) {
 		return minRequest('cat/catdetail', data, 'POST');
 	},
 	
 	//花花详情
-	flowerDetail(data){
+	flowerDetail(data) {
 		return minRequest('flower/flowerdetail', data, 'POST');
 	},
 	
 	//猫猫分类
-	catSort(){
-		return minRequest('cat/classifycolor', 'POST');
+	catColorCategory() {
+		return minRequest('cat/findcolor',  '', 'POST')
+	},
+	catSort(data) {
+		return minRequest('cat/classifycolor', data, 'POST');
 	},
 	
 	//花花分类
 	//按花期分类
-	flowerSortState()
-	{ 
-	    return minRequest('flower/classifyflorescence', 'POST')	
+	flowerStateCategory() {
+		return minRequest('flower/findflorescence', '', 'POST')
 	},
+	flowerSortState(data) { 
+	    return minRequest('flower/classifyflorescence', data, 'POST')	
+	},
+	
 	//按品种进行分类
-	flowerSortVariety()
+	flowerVarietyCategory() {
+		return minRequest('flower/findvariety', '', 'POST')
+	},
+	flowerSortVariety(data)
 	{
-	    return minRequest('flower/classifyvariety', 'POST')		
+	    return minRequest('flower/classifyvariety', data, 'POST')		
 	},
 	
 	//返回用户喜欢的猫与花

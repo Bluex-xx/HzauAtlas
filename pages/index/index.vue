@@ -12,7 +12,8 @@
 		 </view>
 		 </input>
          <image @click="search()" src="../../static/search-button.png" class="search-button"></image>
-		 <image src="../../static/cat-icon.png" class="cat-bg"></image>
+		 <image v-show="tabindex==1" src="../../static/cat-icon.png" class="cat-bg"></image>
+		 <image v-show="tabindex==2" src="../../static/flower-icon-banner.png" class="cat-bg"></image>
 		 <view class="tabs">
 			 <view @click="changeselect(1)">
 			 <image src="../../static/cat-icon-2.png" class="cat-icon"></image>
@@ -32,12 +33,13 @@
 		 </view>
 	 </view>
 	 <view class="cat_list">
-	 	<view v-for="i in 8" class="cat_one">
-			<image @click="todetail" src="../../static/cat_img/2.jpg" class="cat_one_image" mode="aspectFill"></image>
+	 	<view v-for="(i,index) in list" class="cat_one">
+			<image @click="todetail(i.pid,tabindex)" :src="i.store" class="cat_one_image" mode="aspectFill"></image>
 			<view class="cat_name">
-				小灰
+				{{i.name}}
 			</view>
-			<image src="../../static/heart-icon-selected.png"  class="love"></image>
+			<image @click="islike(i.pid,index)" v-show="!i.islike" src="../../static/heart-icon.png"  class="love"></image>
+			<image @click="islike(i.pid,index)" v-show="i.islike" src="../../static/heart-icon-selected.png"  class="love"></image>
 	 	</view>
 	 </view>
 	</view>
@@ -57,13 +59,10 @@
 			}
 		},
 		methods: {
-             changeselect(data){
-			 	this.tabindex=data;
-				this.getlist();
-			},
-            todetail(){
+            //跳转详情页
+            todetail(data){
 				uni.navigateTo({	
-					url: '../../packageA/pages/detail/detail'
+					url: "../../packageA/pages/detail/detail?data="+data
 				})
 			},
 			toscience(){
@@ -71,30 +70,81 @@
 					url: '../../packageA/pages/science/science'
 				})
 			},
+			//获取首页数据
 			getList()
 			{
-				// this.$minApi.indexRecommand
 				api.indexRecommand({uid:1,type:this.tabindex}).then(
 				res => {
 						this.list = res
-						console.log(res)
 						}).catch(err => {
 							console.log(err)
 						})
 			},
 			search(){
-				api.indexRecommand({uid:1,information:this.value}).then(
+				if(this.tabindex==1)
+				{
+					//搜索猫猫
+					api.indexCatSearch({uid:1,information:this.value}).then(
+					res => {
+								if(res.length==0)
+								{
+									uni.showModal({
+										content: '没有搜到噢',
+										showCancel: false
+									});
+								}
+								else
+								{
+									this.list = res
+								}
+							 }).catch(err => {
+							 	console.log(err)
+							 })  
+					
+				}
+                else
+				{
+					//搜索花花
+					api.indexFlowerSearch({uid:1,information:this.value}).then(
+					res => {
+								if(res.length==0)
+								{
+									uni.showModal({
+										content: '没有搜到噢',
+										showCancel: false
+									});
+								}
+								else
+								{
+									this.list = res
+								}
+							}).catch(err => {
+								console.log(err)
+							})
+				}
+			},
+			//导航切换
+			changeselect(data){
+			 	this.tabindex=data;
+				this.getList(data);
+				uni.setStorageSync('tabindex', this.tabindex);
+			},
+			//照片点赞
+			islike(data,id){
+				api.picLike({uid:1,pid:data}).then(
 				res => {
-						this.list = res
+						if(res=="操作成功")
+						{
+							this.list[id].islike=!this.list[id].islike;
+						}
 						}).catch(err => {
 							console.log(err)
 						})
 			}
 		},
 		 mounted(){
-			 console.log('getList')
               this.getList();
-			  
+			  this.changeselect(1);
 		 }
 	}
 </script>

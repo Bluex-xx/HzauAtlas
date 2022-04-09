@@ -2,8 +2,8 @@
 	<view>
 		<!-- header -->
 		<view class="header_img">
-			<image v-if="category" src="../../static/category_header_flower.png" mode="aspectFit"></image>
-			<image v-else src="../../static/category_header_cat.png" mode="aspectFit"></image>
+			<image v-if="category" src="../../static/category_header_cat.png" mode="aspectFit"></image>
+			<image v-else src="../../static/category_header_flower.png" mode="aspectFit"></image>
 		</view>
 		
 		<!-- 左侧选择框 -->
@@ -32,8 +32,8 @@
 			
 			<!-- 分类内容 -->
 			<view class="content_main">
-				<view class="content_main_item" v-for="item in contentList" :key="item" @click="toList">
-					<image class="content_main_item_image" src="../../static/cat_img/3.jpg" mode="aspectFill"></image>
+				<view class="content_main_item" v-for="item in contentList" :key="item" @click="toList(item)">
+					<image class="content_main_item_image" src="https://img-1254085044.cos.ap-nanjing.myqcloud.com/static/3.jpg" mode="aspectFill"></image>
 					<view class="content_main_item_text">
 						{{ item }}
 					</view>
@@ -48,7 +48,7 @@
 	export default {
 		data() {
 			return {
-				category: 1,
+				category: 0,
 				contentTitle: '花花分类',
 				// selectButton: buttonName,
 				selectContentList:[],
@@ -63,11 +63,7 @@
 					'出没位置'
 				],
 				contentList: [              //对象数组，包含类别名称和具有该类别的典型特征的猫/花的图片
-					'红',
-					'黄',
-					'蓝',
-					'绿',
-					'白'
+					'红'
 				]
 			}
 		},
@@ -78,13 +74,13 @@
 		},
 		methods: {
 			changeCategory() {
-				if(this.category == 1) {
-					this.category = 0;
+				if(this.category == 0) {
+					this.category = 1;
 					this.contentTitle = '猫猫分类';
 					this.selectContentList = this.selectCatList
 				}
 				else {
-					this.category = 1;
+					this.category = 0;
 					this.contentTitle = '花花分类';
 					this.selectContentList = this.selectFlowerList
 				}
@@ -96,32 +92,37 @@
 				// 获取用户选中的按钮的信息，并作为传给后端的参数
 				// 获取相应数据
 				if(this.category) {
-					if(index == 1) {
-						console.log(index)
-						api.flowerSortState().then(res => {
+					if(index == 0) {
+						uni.setStorageSync('categoryitem', this.selectCatList[index])
+						api.catColorCategory().then(res => {
 							console.log(res)
-						})
-					}
-					else if(index == 2) {
-						console.log(index)
-						api.flowerSortVariety().then(res => {
-							console.log(res)
+							this.contentList = res
 						})
 					}
 				}
 				else {
-					if(index == 0) {
-						api.catSort().then(res => {
+					if(index == 1) {
+						uni.setStorageSync('categoryitem', this.selectFlowerList[index])
+						api.flowerStateCategory().then(res => {
 							console.log(res)
+							this.contentList = res
 						})
 					}
-					
+					else if(index == 2) {
+						uni.setStorageSync('categoryitem', this.selectFlowerList[index])
+						api.flowerVarietyCategory().then(res => {
+							console.log(res)
+							this.contentList = res
+						})
+					}
 				}
 				
 			},
-			toList() {
+			toList(data) {
+				uni.setStorageSync('categoryindex', this.category)
+				console.log(data)
 				uni.navigateTo({
-					url:'../../packageA/pages/list/list'
+					url:'../../packageA/pages/list/list?data='+data
 				})
 			}
 		},

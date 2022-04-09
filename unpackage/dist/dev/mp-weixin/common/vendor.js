@@ -947,7 +947,7 @@ function initData(vueOptions, context) {
     try {
       data = data.call(context); // 支持 Vue.prototype 上挂的数据
     } catch (e) {
-      if (Object({"VUE_APP_NAME":"HzauHandBook","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"NODE_ENV":"development","VUE_APP_NAME":"HzauHandBook","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.warn('根据 Vue 的 data 函数初始化小程序 data 失败，请尽量确保 data 函数中不访问 vm 对象，否则可能影响首次数据渲染速度。', data);
       }
     }
@@ -7647,7 +7647,7 @@ function type(obj) {
 
 function flushCallbacks$1(vm) {
     if (vm.__next_tick_callbacks && vm.__next_tick_callbacks.length) {
-        if (Object({"VUE_APP_NAME":"HzauHandBook","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+        if (Object({"NODE_ENV":"development","VUE_APP_NAME":"HzauHandBook","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:flushCallbacks[' + vm.__next_tick_callbacks.length + ']');
@@ -7668,14 +7668,14 @@ function nextTick$1(vm, cb) {
     //1.nextTick 之前 已 setData 且 setData 还未回调完成
     //2.nextTick 之前存在 render watcher
     if (!vm.__next_tick_pending && !hasRenderWatcher(vm)) {
-        if(Object({"VUE_APP_NAME":"HzauHandBook","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"NODE_ENV":"development","VUE_APP_NAME":"HzauHandBook","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:nextVueTick');
         }
         return nextTick(cb, vm)
     }else{
-        if(Object({"VUE_APP_NAME":"HzauHandBook","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"NODE_ENV":"development","VUE_APP_NAME":"HzauHandBook","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance$1 = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance$1.is || mpInstance$1.route) + '][' + vm._uid +
                 ']:nextMPTick');
@@ -7761,7 +7761,7 @@ var patch = function(oldVnode, vnode) {
     });
     var diffData = this.$shouldDiffData === false ? data : diff(data, mpData);
     if (Object.keys(diffData).length) {
-      if (Object({"VUE_APP_NAME":"HzauHandBook","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"NODE_ENV":"development","VUE_APP_NAME":"HzauHandBook","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + this._uid +
           ']差量更新',
           JSON.stringify(diffData));
@@ -8893,12 +8893,13 @@ function normalizeComponent (
 
 
 
-var baseUrl = 'http://api.somecute.cn:8086/';exports.baseUrl = baseUrl;
+var baseUrl = 'https://api.somecute.cn/';exports.baseUrl = baseUrl;
 
 var tokenStr;var _default = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(
 
 function _callee() {var url,data,type,_yield$uni$request,_yield$uni$request2,err,res,request,_args = arguments;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:url = _args.length > 0 && _args[0] !== undefined ? _args[0] : '';data = _args.length > 1 && _args[1] !== undefined ? _args[1] : {};type = _args.length > 2 && _args[2] !== undefined ? _args[2] : 'GET';
           tokenStr = uni.getStorageSync('token');_context.next = 6;return (
+
             uni.request({
               url: baseUrl + url,
               method: type,
@@ -9773,20 +9774,29 @@ var api = {
   },
 
   //猫猫分类
-  catSort: function catSort() {
-    return (0, _MinRequest.default)('cat/classifycolor', 'POST');
+  catColorCategory: function catColorCategory() {
+    return (0, _MinRequest.default)('cat/findcolor', '', 'POST');
+  },
+  catSort: function catSort(data) {
+    return (0, _MinRequest.default)('cat/classifycolor', data, 'POST');
   },
 
   //花花分类
   //按花期分类
-  flowerSortState: function flowerSortState()
-  {
-    return (0, _MinRequest.default)('flower/classifyflorescence', 'POST');
+  flowerStateCategory: function flowerStateCategory() {
+    return (0, _MinRequest.default)('flower/findflorescence', '', 'POST');
   },
+  flowerSortState: function flowerSortState(data) {
+    return (0, _MinRequest.default)('flower/classifyflorescence', data, 'POST');
+  },
+
   //按品种进行分类
-  flowerSortVariety: function flowerSortVariety()
+  flowerVarietyCategory: function flowerVarietyCategory() {
+    return (0, _MinRequest.default)('flower/findvariety', '', 'POST');
+  },
+  flowerSortVariety: function flowerSortVariety(data)
   {
-    return (0, _MinRequest.default)('flower/classifyvariety', 'POST');
+    return (0, _MinRequest.default)('flower/classifyvariety', data, 'POST');
   },
 
   //返回用户喜欢的猫与花

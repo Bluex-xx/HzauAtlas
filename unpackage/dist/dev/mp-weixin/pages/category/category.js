@@ -221,39 +221,40 @@ var _api = _interopRequireDefault(__webpack_require__(/*! @/api/api.js */ 16));f
 //
 //
 //
-var _default = { data: function data() {return { category: 1, contentTitle: '花花分类', // selectButton: buttonName,
+var _default = { data: function data() {return { category: 0, contentTitle: '花花分类', // selectButton: buttonName,
       selectContentList: [], selectFlowerList: ['花色', '花期', '品种', '生长位置'], selectCatList: ['毛色', '出没位置'], contentList: [//对象数组，包含类别名称和具有该类别的典型特征的猫/花的图片
-      '红', '黄', '蓝', '绿', '白'] };}, created: function created() {// this.selectContentList = this.selectFlowerList
+      '红'] };}, created: function created() {// this.selectContentList = this.selectFlowerList
     // 获取默认大类的小类列表
     // 获取默认小类中的具体内容
-  }, methods: { changeCategory: function changeCategory() {if (this.category == 1) {this.category = 0;this.contentTitle = '猫猫分类';this.selectContentList = this.selectCatList;} else {this.category = 1;this.contentTitle = '花花分类';this.selectContentList = this.selectFlowerList;} // 获取详细分类方式list，即左侧选择分类按钮
+  }, methods: { changeCategory: function changeCategory() {if (this.category == 0) {this.category = 1;this.contentTitle = '猫猫分类';this.selectContentList = this.selectCatList;} else {this.category = 0;this.contentTitle = '花花分类';this.selectContentList = this.selectFlowerList;} // 获取详细分类方式list，即左侧选择分类按钮
       // 获取两个大类中选中的一个的默认第一个小类中具体内容，即猫的毛列表和花的花色列表
-    }, selectCategory: function selectCategory(index) {// 获取用户选中的按钮的信息，并作为传给后端的参数
+    }, selectCategory: function selectCategory(index) {var _this = this; // 获取用户选中的按钮的信息，并作为传给后端的参数
       // 获取相应数据
-      if (this.category) {if (index == 1) {console.log(index);_api.default.flowerSortState().then(function (res) {
+      if (this.category) {if (index == 0) {uni.setStorageSync('categoryitem', this.selectCatList[index]);_api.default.catColorCategory().then(function (res) {console.log(res);_this.contentList = res;});}
+      } else
+      {
+        if (index == 1) {
+          uni.setStorageSync('categoryitem', this.selectFlowerList[index]);
+          _api.default.flowerStateCategory().then(function (res) {
             console.log(res);
+            _this.contentList = res;
           });
         } else
         if (index == 2) {
-          console.log(index);
-          _api.default.flowerSortVariety().then(function (res) {
+          uni.setStorageSync('categoryitem', this.selectFlowerList[index]);
+          _api.default.flowerVarietyCategory().then(function (res) {
             console.log(res);
+            _this.contentList = res;
           });
         }
-      } else
-      {
-        if (index == 0) {
-          _api.default.catSort().then(function (res) {
-            console.log(res);
-          });
-        }
-
       }
 
     },
-    toList: function toList() {
+    toList: function toList(data) {
+      uni.setStorageSync('categoryindex', this.category);
+      console.log(data);
       uni.navigateTo({
-        url: '../../packageA/pages/list/list' });
+        url: '../../packageA/pages/list/list?data=' + data });
 
     } },
 

@@ -307,7 +307,7 @@ var _api = _interopRequireDefault(__webpack_require__(/*! ../../api/api.js */ 16
 //
 //
 //
-var _default = { data: function data() {return { userInfo: { avatar: '../../static/20210927224434.jpg', nickname: 'bluexx' }, like_list: [{ name: 'Cat', content: ['1111'] }, { name: 'Flower', content: ['2222'] }], tab_1: "猫猫", tab_2: "花花", tabindex: 1 };}, methods: { changeselect: function changeselect(data) {this.tabindex = data;this.getLike();}, todetail: function todetail() {uni.navigateTo({ url: '../../packageA/pages/detail/detail' });}, getLike: function getLike() {var _this = this;_api.default.userLikePic({ uid: '001', type: this.tabindex }).then(function (res) {_this.like_list[_this.tabindex - 1].content = res;});} }, mounted: function mounted() {this.getLike();} };exports.default = _default;
+var _default = { data: function data() {return { userInfo: { avatar: 'https://img-1254085044.cos.ap-nanjing.myqcloud.com/static/20210927224434.jpg', nickname: 'bluexx' }, like_list: [{ name: 'Cat', content: ['1111'] }, { name: 'Flower', content: ['2222'] }], tab_1: "猫猫", tab_2: "花花", tabindex: 1 };}, methods: { changeselect: function changeselect(data) {this.tabindex = data;this.getLike();}, todetail: function todetail() {uni.navigateTo({ url: '../../packageA/pages/detail/detail' });}, getLike: function getLike() {var _this = this;_api.default.userLikePic({ uid: '001', type: this.tabindex }).then(function (res) {_this.like_list[_this.tabindex - 1].content = res;});} }, mounted: function mounted() {this.getLike();} };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),

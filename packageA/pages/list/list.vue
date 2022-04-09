@@ -3,7 +3,7 @@
 		<view class="header">
 			<image @click="backToLast" src="../../../static/back-icon.png" class="back"></image>
 			
-			<image class="header_img" src="../../../static/flower_header.jpg" mode="aspectFill"></image>
+			<image class="header_img" src="https://img-1254085044.cos.ap-nanjing.myqcloud.com/static/flower_header.jpg" mode="aspectFill"></image>
 		</view>
 		
 		<view class="content">
@@ -16,17 +16,17 @@
 			<scroll-view class="content_main" scroll-x="true">
 				<view class="content_main_item" v-for="item in categoryList" :key="item">
 					<view class="content_item_imgbox">
-						<image class="content_item_img" src="../../../static/flower_list.jpg" mode="aspectFill"  @click="previewImg()"></image>
+						<image class="content_item_img" :src="item.picture.store" mode="aspectFill"  @click="previewImg(item.picture.store)"></image>
 					</view>
 					
 					<view class="content_item_line">
 						<view class="content_item_name">
 							{{ item.name }}
 						</view>
-						<image class="content_item_like" src="../../../static/heart-icon-selected.png" mode="aspectFit"></image>
+						<!-- <image class="content_item_like" src="../../../static/heart-icon-selected.png" mode="aspectFit"></image> -->
 					</view>
 					
-					<image class="content_item_more"src="../../../static/more.png" mode="aspectFit" @click="toDetail"></image>
+					<image class="content_item_more"src="../../../static/more.png" mode="aspectFit" @click="toDetail(item.picture.pid)"></image>
 				</view>
 				
 			</scroll-view>
@@ -35,6 +35,7 @@
 </template>
 
 <script>
+	import api from '@/api/api.js'
 	export default {
 		data() {
 			return {
@@ -45,15 +46,38 @@
 				categoryTitle: '纯色',
 				categoryList: [
 					{
-						name: '名称1'
-					},
-					{
-						name: 'hhhhhh',
-					},
-					{
-						name: 'cccccc'
+						cid: '1',
+						name: '名称1',
+						picture: {
+							pid: '1',
+							store: 'https://img-1254085044.cos.ap-nanjing.myqcloud.com/static/flower_list.jpg'
+						}
 					}
 				]
+			}
+		},
+		onLoad(option) {
+			if(uni.getStorageSync('categoryindex') == 1) {
+				if(uni.getStorageSync('categoryitem') == '毛色') {
+					api.catSort({color: option.data}).then(res => {
+						this.categoryTitle = option.data
+						this.categoryList = res
+					})
+				}
+			}
+			else {
+				if(uni.getStorageSync('categoryitem') == '花期') {
+					api.flowerSortState({florescence: option.data}).then(res => {
+						this.categoryTitle = option.data
+						this.categoryList = res
+					})
+				}
+				else if(uni.getStorageSync('categoryitem') == '品种') {
+					api.flowerSortVariety({variety: option.data}).then(res => {
+						this.categoryTitle = option.data
+						this.categoryList = res
+					})
+				}
 			}
 		},
 		methods: {
@@ -63,17 +87,17 @@
 					url:pages[pages.length-2].route
 				})
 			},
-			toDetail() {
+			toDetail(data) {
 				uni.navigateTo({
-					url:'../detail/detail'
+					url:'../detail/detail?data='+data
 				})
 			},
-			previewImg(){
+			previewImg(data){
 			uni.previewImage({
 				// 当前需要预览的图片
-				current:"https://qpic.y.qq.com/music_cover/Kwg1Hs1pPD1YBDmLn9lwWcU93G4uWX0rKvHoGymiau22zalc3yu06pg/300?n=1",
-				//所有图片
-				urls:["https://qpic.y.qq.com/music_cover/Kwg1Hs1pPD1YBDmLn9lwWcU93G4uWX0rKvHoGymiau22zalc3yu06pg/300?n=1"]
+				current:data,
+				// //所有图片
+				urls:[data]
 			});			
 			}
 		}
@@ -112,7 +136,7 @@
 	position: absolute;
 	/* top: 272px; */
 	width: 750rpx;
-	height: 1175rpx;
+	height:1200rpx;
 	/* border-radius: 19rpx; */
 	background: #F1FCFD;
 	box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.3);

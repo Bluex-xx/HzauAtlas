@@ -27,7 +27,7 @@
 	position: absolute;
 	/* top: 272px; */
 	width: 750rpx;
-	height: 1175rpx;
+	height:1200rpx;
 	/* border-radius: 19rpx; */
 	background: #F1FCFD;
 	box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.3);

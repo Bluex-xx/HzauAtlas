@@ -130,63 +130,87 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-var _default =
-{
-  data: function data() {
-    return {
-      scrollTop: 0,
-      old: {
-        scrollTop: 0 },
-
-      categoryTitle: '纯色',
-      categoryList: [
-      {
-        name: '名称1' },
-
-      {
-        name: 'hhhhhh' },
-
-      {
-        name: 'cccccc' }] };
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var _api = _interopRequireDefault(__webpack_require__(/*! @/api/api.js */ 16));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };} //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+var _default = { data: function data() {return { scrollTop: 0, old: { scrollTop: 0 }, categoryTitle: '纯色', categoryList: [{ cid: '1', name: '名称1', picture: { pid: '1', store: 'https://img-1254085044.cos.ap-nanjing.myqcloud.com/static/flower_list.jpg' } }] };}, onLoad: function onLoad(option) {var _this = this;if (uni.getStorageSync('categoryindex') == 1) {if (uni.getStorageSync('categoryitem') == '毛色') {_api.default.catSort({ color: option.data }).then(function (res) {_this.categoryTitle = option.data;_this.categoryList = res;});}} else {if (uni.getStorageSync('categoryitem') == '花期') {_api.default.flowerSortState({ florescence: option.data }).then(function (res) {_this.categoryTitle = option.data;_this.categoryList = res;});} else
+      if (uni.getStorageSync('categoryitem') == '品种') {
+        _api.default.flowerSortVariety({ variety: option.data }).then(function (res) {
+          _this.categoryTitle = option.data;
+          _this.categoryList = res;
+        });
+      }
+    }
   },
   methods: {
     backToLast: function backToLast() {
@@ -195,17 +219,17 @@ var _default =
         url: pages[pages.length - 2].route });
 
     },
-    toDetail: function toDetail() {
+    toDetail: function toDetail(data) {
       uni.navigateTo({
-        url: '../detail/detail' });
+        url: '../detail/detail?data=' + data });
 
     },
-    previewImg: function previewImg() {
+    previewImg: function previewImg(data) {
       uni.previewImage({
         // 当前需要预览的图片
-        current: "https://qpic.y.qq.com/music_cover/Kwg1Hs1pPD1YBDmLn9lwWcU93G4uWX0rKvHoGymiau22zalc3yu06pg/300?n=1",
-        //所有图片
-        urls: ["https://qpic.y.qq.com/music_cover/Kwg1Hs1pPD1YBDmLn9lwWcU93G4uWX0rKvHoGymiau22zalc3yu06pg/300?n=1"] });
+        current: data,
+        // //所有图片
+        urls: [data] });
 
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))

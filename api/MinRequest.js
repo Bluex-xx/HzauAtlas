@@ -106,12 +106,13 @@
 
 
 
-const baseUrl = 'http://api.somecute.cn:8086/'
+const baseUrl = 'https://api.somecute.cn/'
 
 var tokenStr;
 
 export default async(url = '', data = {}, type = 'GET') =>  {
 				tokenStr = uni.getStorageSync('token')
+				
 				const [err, res] = await uni.request({
 					url: baseUrl+url,
 					method:type,
@@ -148,8 +149,9 @@ export default async(url = '', data = {}, type = 'GET') =>  {
 					else{
 						let	request = res.data
 						return(request)
-					}
+					}					
 				}
+				
 			}
 
 export { baseUrl }

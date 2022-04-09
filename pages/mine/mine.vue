@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view class="header">
-			<image class="header_avatar_bg" src="../../static/timg1.jpg"></image>
+			<image class="header_avatar_bg" src="https://img-1254085044.cos.ap-nanjing.myqcloud.com/static/timg1.jpg"></image>
 			
 			<view class="" v-if="userInfo">
 				<image class="header_avatar" :src="userInfo.avatar" mode="aspectFill">
@@ -75,7 +75,7 @@
 		
 			<view class="main_photo">
 				<view v-for="i in like_list[tabindex-1].content" class="photo_one" @click="todetail()">
-					<image src="../../static/cat_img/1.jpg" mode="aspectFill" style="width: 100%;height: 100%;"></image>
+					<image src="https://img-1254085044.cos.ap-nanjing.myqcloud.com/static/1.jpg" mode="aspectFill" style="width: 100%;height: 100%;"></image>
 					{{ i }}
 				</view>
 			</view>
@@ -92,7 +92,7 @@
 		data() {
 			return {
 				userInfo: {
-					avatar: '../../static/20210927224434.jpg',
+					avatar: 'https://img-1254085044.cos.ap-nanjing.myqcloud.com/static/20210927224434.jpg',
 					nickname: 'bluexx'
 				},
 				like_list: [{

@@ -175,6 +175,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
 var _api = _interopRequireDefault(__webpack_require__(/*! @/api/api.js */ 16));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };} //
 //
 //
@@ -219,14 +221,62 @@ var _api = _interopRequireDefault(__webpack_require__(/*! @/api/api.js */ 16));f
 //
 //
 //
-var _default = { data: function data() {return { title: "Hello", tip: "There are something cute...", value: "", tab_1: "猫猫", tab_2: "花花", tabindex: 1, list: "" };}, methods: { changeselect: function changeselect(data) {this.tabindex = data;this.getlist();}, todetail: function todetail() {uni.navigateTo({ url: '../../packageA/pages/detail/detail' });}, toscience: function toscience() {uni.navigateTo({ url: '../../packageA/pages/science/science' });}, getList: function getList() {var _this = this; // this.$minApi.indexRecommand
-      _api.default.indexRecommand({ uid: 1, type: this.tabindex }).then(function (res) {_this.list = res;console.log(res);}).catch(function (err) {console.log(err);});}, search: function search() {var _this2 = this;_api.default.indexRecommand({ uid: 1, information: this.value }).then(function (res) {_this2.list = res;}).catch(function (err) {console.log(err);});
+//
+//
+var _default = { data: function data() {return { title: "Hello", tip: "There are something cute...", value: "", tab_1: "猫猫", tab_2: "花花", tabindex: 1, list: "" };}, methods: { //跳转详情页
+    todetail: function todetail(data) {uni.navigateTo({ url: "../../packageA/pages/detail/detail?data=" + data });}, toscience: function toscience() {uni.navigateTo({ url: '../../packageA/pages/science/science' });}, //获取首页数据
+    getList: function getList() {var _this = this;_api.default.indexRecommand({ uid: 1, type: this.tabindex }).then(function (res) {_this.list = res;}).catch(function (err) {console.log(err);});}, search: function search() {var _this2 = this;if (this.tabindex == 1) {//搜索猫猫
+        _api.default.indexCatSearch({ uid: 1, information: this.value }).then(function (res) {if (res.length == 0) {uni.showModal({ content: '没有搜到噢', showCancel: false });} else {
+            _this2.list = res;
+          }
+        }).catch(function (err) {
+          console.log(err);
+        });
+
+      } else
+
+      {
+        //搜索花花
+        _api.default.indexFlowerSearch({ uid: 1, information: this.value }).then(
+        function (res) {
+          if (res.length == 0)
+          {
+            uni.showModal({
+              content: '没有搜到噢',
+              showCancel: false });
+
+          } else
+
+          {
+            _this2.list = res;
+          }
+        }).catch(function (err) {
+          console.log(err);
+        });
+      }
+    },
+    //导航切换
+    changeselect: function changeselect(data) {
+      this.tabindex = data;
+      this.getList(data);
+      uni.setStorageSync('tabindex', this.tabindex);
+    },
+    //照片点赞
+    islike: function islike(data, id) {var _this3 = this;
+      _api.default.picLike({ uid: 1, pid: data }).then(
+      function (res) {
+        if (res == "操作成功")
+        {
+          _this3.list[id].islike = !_this3.list[id].islike;
+        }
+      }).catch(function (err) {
+        console.log(err);
+      });
     } },
 
   mounted: function mounted() {
-    console.log('getList');
     this.getList();
-
+    this.changeselect(1);
   } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
