@@ -28,4 +28,6 @@ public class Cat {
     private List<Picture> pictureList;
     @Transient
     private List<Cat> catList;
+    @Transient
+    private Integer liked;
 }

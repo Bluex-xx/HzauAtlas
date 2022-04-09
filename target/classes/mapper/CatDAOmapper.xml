@@ -4,12 +4,13 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.atlas.dao.CatDAO">
     <select id="recommend" resultMap="Catr">
-        select * from cat order by rand() limit 16
+        select cid,sum(liked) liked,name from picture where fid is null group by cid order by liked desc limit 16
     </select>
 
     <resultMap id="Catr" type="com.atlas.entity.Cat">
         <id column="cid" property="cid"></id>
         <result column="name" property="name"></result>
+        <result column="liked" property="liked"></result>
         <collection property="picture" select="findpicture" column="cid"></collection>
     </resultMap>
 

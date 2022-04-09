@@ -2,7 +2,10 @@ package com.atlas.controller;
 
 import cn.hutool.core.util.BooleanUtil;
 import com.atlas.entity.Cat;
+import com.atlas.entity.Flower;
 import com.atlas.entity.Picture;
+import com.atlas.service.Impl.CatServiceImpl;
+import com.atlas.service.Impl.FlowerServiceImpl;
 import com.atlas.service.Impl.PictureServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -25,37 +28,41 @@ import java.util.stream.Collectors;
 public class PictureController {
     @Autowired
     private PictureServiceImpl pictureService;
+    @Autowired
+    private CatServiceImpl catService;
+    @Autowired
+    private FlowerServiceImpl flowerService;
     @Resource
     private StringRedisTemplate stringRedisTemplate;
 
     //为照片点赞，会存入redis数据库
     @ResponseBody
     @PostMapping("/like")
-    public String likept(@RequestBody Picture picture){
-        String uid= picture.getUid();
-        String key="picture:"+uid;
-        System.out.println("key"+key);
+    public String likept(@RequestBody Picture picture) {
+        String uid = picture.getUid();
+        String key = "picture:" + uid;
+        System.out.println("key" + key);
         System.out.println(picture.getPid().toString());
-        Boolean isMember=stringRedisTemplate.opsForSet().isMember(key,picture.getPid().toString());
-        System.out.println(isMember+" "+BooleanUtil.isFalse(isMember));
-        if(BooleanUtil.isFalse(isMember)){
-            int row=pictureService.likept(picture);
-            if(row!=0){
-                stringRedisTemplate.opsForSet().add(key,picture.getPid().toString());
+        Boolean isMember = stringRedisTemplate.opsForSet().isMember(key, picture.getPid().toString());
+        System.out.println(isMember + " " + BooleanUtil.isFalse(isMember));
+        if (BooleanUtil.isFalse(isMember)) {
+            int row = pictureService.likept(picture);
+            if (row != 0) {
+                stringRedisTemplate.opsForSet().add(key, picture.getPid().toString());
                 return "操作成功";
             }
-        }else{
-            int row=pictureService.likept2(picture);
-            stringRedisTemplate.opsForSet().remove(key,picture.getPid().toString());
+        } else {
+            int row = pictureService.likept2(picture);
+            stringRedisTemplate.opsForSet().remove(key, picture.getPid().toString());
         }
         return "操作成功";
     }
 
     //判断是否在表中
-    public boolean isliked(@RequestBody Picture picture){
-        String key="picture:"+picture.getUid();
+    public boolean isliked(@RequestBody Picture picture) {
+        String key = "picture:" + picture.getUid();
         //System.out.println("key:"+key);
-        Boolean isMember=stringRedisTemplate.opsForSet().isMember(key,picture.getPid().toString());
+        Boolean isMember = stringRedisTemplate.opsForSet().isMember(key, picture.getPid().toString());
         //System.out.println("isMember:"+isMember);
         picture.setIslike(BooleanUtil.isTrue(isMember));
         return isMember;
@@ -64,27 +71,24 @@ public class PictureController {
     //主页推荐，根据点赞数量进行排序
     @ResponseBody
     @PostMapping("/recommend")
-    public List<Picture> recommend(@RequestBody Picture picture){
-        List<Picture> pictureList=new ArrayList<>();
-        List<Integer> idList=new ArrayList<>();
+    public List<Object> recommend(@RequestBody Picture picture){
+        List<Cat> catList= catService.recommend();
+        List<Flower> flowerList= flowerService.recommend();
+        List<Object> objectList=new ArrayList<>();
         if(picture.getType()==1){
-            idList= pictureService.findcid();
-            System.out.println(idList);
-            pictureList=pictureService.recommendcat(idList);
-            //pictureList= pictureService.recommendcat();
-        }else{
-            idList= pictureService.findfid();
-            pictureList=pictureService.recommendflower(idList);
-           // pictureList= pictureService.recommendflower();
-        }
-        //System.out.println(pictureList);
-        pictureList.forEach(picture1 -> {
-            picture1.setUid(picture.getUid());
-            //System.out.println("picture:"+picture1);
-            isliked(picture1);
-            //System.out.println(isliked(picture1));
+            catList.forEach(cat -> {
+                cat.getPicture().setUid(picture.getUid());
+                isliked(cat.getPicture());
         });
-        return pictureList;
+           objectList=new ArrayList<>(catList);
+        }else{
+            flowerList.forEach(flower -> {
+                flower.getPicture().setUid(picture.getUid());
+                isliked(flower.getPicture());
+            });
+            objectList=new ArrayList<>(flowerList);
+        }
+           return objectList;
     }
 
     //用户界面
@@ -94,12 +98,7 @@ public class PictureController {
         String key="picture:"+picture.getUid();
         System.out.println(picture.getUid());
         List<String> stringList=new ArrayList<String>(stringRedisTemplate.opsForSet().members(key)) {};
-        //List codesInteger = stringList.stream().map(Integer::parseInt).collect(Collectors.toList());
         System.out.println(stringList);
-        /*List<Integer> integerList=new ArrayList<>();
-        stringList.forEach(s -> {
-            integerList.add(Integer.valueOf(s));
-        });*/
         List<Picture> pictureList=new ArrayList<>();
         if(picture.getType()==1){
             pictureList=pictureService.findbypidcat(stringList);

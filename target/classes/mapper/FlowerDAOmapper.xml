@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.atlas.dao.FlowerDAO">
     <select id="recommend" resultMap="Flowerr">
-        select * from flower order by rand() limit 1
+        select fid,sum(liked),name liked from picture where cid is null group by fid order by liked desc limit 16;
     </select>
 
     <resultMap id="Flowerr" type="com.atlas.entity.Flower">
