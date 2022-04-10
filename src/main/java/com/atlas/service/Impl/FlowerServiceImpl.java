@@ -41,12 +41,12 @@ public class FlowerServiceImpl implements FlowerService {
     }
 
     @Override
-    public List<String> findflorescence() {
+    public List<Flower> findflorescence() {
         return flowerDAO.findflorescence();
     }
 
     @Override
-    public List<String> findvariety() {
+    public List<Flower> findvariety() {
         return flowerDAO.findvariety();
     }
 }

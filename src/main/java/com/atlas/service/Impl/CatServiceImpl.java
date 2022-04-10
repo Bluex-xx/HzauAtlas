@@ -35,7 +35,7 @@ public class CatServiceImpl implements CatService {
     }
 
     @Override
-    public List<String> findcolor() {
+    public List<Cat> findcolor() {
         return catDAO.findcolor();
     }
 }

@@ -12,5 +12,5 @@ public interface CatDAO {
     Cat catdetail(Picture picture);
     List<Cat> search(Picture picture);
     List<Cat> findall(Cat cat);
-    List<String> findcolor();
+    List<Cat> findcolor();
 }

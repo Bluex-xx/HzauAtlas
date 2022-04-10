@@ -14,6 +14,6 @@ public interface FlowerDAO {
     List<Flower> search(Picture picture);
     List<Flower> classifyflorescence(Flower flower);
     List<Flower> classifyvariety(Flower flower);
-    List<String> findflorescence();
-    List<String> findvariety();
+    List<Flower> findflorescence();
+    List<Flower> findvariety();
 }

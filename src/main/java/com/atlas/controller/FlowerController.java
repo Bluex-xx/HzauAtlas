@@ -81,14 +81,14 @@ public class FlowerController {
     //分类品种
     @ResponseBody
     @PostMapping("/findvariety")
-    public List<String> findvariety(){
+    public List<Flower> findvariety(){
         return flowerService.findvariety();
     }
 
     //分类花期
     @ResponseBody
     @PostMapping("/findflorescence")
-    public List<String> findflorescence(){
+    public List<Flower> findflorescence(){
         return flowerService.findflorescence();
     }
 }

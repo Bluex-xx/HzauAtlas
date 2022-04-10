@@ -89,7 +89,7 @@ public class CatController {
     //返回所有花色
     @ResponseBody
     @PostMapping("/findcolor")
-    public List<String> findcolor(){
+    public List<Cat> findcolor(){
         return catService.findcolor();
     }
 
