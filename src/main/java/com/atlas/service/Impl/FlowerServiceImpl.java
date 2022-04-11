@@ -41,6 +41,11 @@ public class FlowerServiceImpl implements FlowerService {
     }
 
     @Override
+    public List<Flower> classifycolor(Flower flower) {
+        return flowerDAO.classifycolor(flower);
+    }
+
+    @Override
     public List<Flower> findflorescence() {
         return flowerDAO.findflorescence();
     }
@@ -48,5 +53,10 @@ public class FlowerServiceImpl implements FlowerService {
     @Override
     public List<Flower> findvariety() {
         return flowerDAO.findvariety();
+    }
+
+    @Override
+    public List<Flower> findcolor() {
+        return flowerDAO.findcolor();
     }
 }

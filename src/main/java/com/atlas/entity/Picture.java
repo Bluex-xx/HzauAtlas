@@ -6,13 +6,14 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.Transient;
+import java.io.Serializable;
 
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class Picture {
+public class Picture implements Serializable {
     private Integer pid;
     private Integer fid;
     private Integer cid;

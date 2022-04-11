@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.atlas.dao.FlowerDAO">
     <select id="recommend" resultMap="Flowerr">
-        select fid,sum(liked),name liked from picture where cid is null group by fid order by liked desc limit 8
+        select fid,sum(liked) liked,name from picture where cid is null group by fid order by liked desc limit 10
     </select>
 
     <resultMap id="Flowerr" type="com.atlas.entity.Flower">
@@ -29,6 +29,7 @@
         <result property="florescence" column="florescence"></result>
         <result property="fid" column="fid"></result>
         <result property="name" column="name"></result>
+        <result property="color" column="color"></result>
         <result property="department" column="department"></result>
         <result property="allegory" column="allegory"></result>
         <collection property="picture" select="findpicture" column="fid"></collection>
@@ -38,6 +39,18 @@
         <id property="fid" column="fid"></id>
         <result property="name" column="name"></result>
         <result property="fid" column="fid"></result>
+        <result property="florescence" column="florescence"></result>
+        <result property="color" column="color"></result>
+        <result property="department" column="department"></result>
+        <result property="allegory" column="allegory"></result>
+        <collection property="picture" select="findpicture" column="fid"></collection>
+    </resultMap>
+
+    <resultMap id="color" type="com.atlas.entity.Flower">
+        <id property="fid" column="fid"></id>
+        <result property="name" column="name"></result>
+        <result property="fid" column="fid"></result>
+        <result property="color" column="color"></result>
         <result property="florescence" column="florescence"></result>
         <result property="department" column="department"></result>
         <result property="allegory" column="allegory"></result>
@@ -56,6 +69,10 @@
         select f.*  from flower f where department=#{department}
     </select>
 
+    <select id="classifycolor" parameterType="Flower" resultMap="color">
+        select f.*  from flower f where color=#{color}
+    </select>
+
     <select id="findflorescence" resultMap="findf2">
         select distinct florescence,name from flower group by florescence
     </select>
@@ -64,8 +81,17 @@
         select distinct department,name from flower group by department
     </select>
 
+    <select id="findcolor" resultMap="findc2">
+        select distinct color,name from flower group by color
+    </select>
+
     <resultMap id="findf2" type="com.atlas.entity.Flower">
-        <result property="department" column="department"></result>
+        <result property="florescence" column="florescence"></result>
+        <collection property="picture" select="findpicture2" column="name"></collection>
+    </resultMap>
+
+    <resultMap id="findc2" type="com.atlas.entity.Flower">
+        <result property="color" column="color"></result>
         <collection property="picture" select="findpicture2" column="name"></collection>
     </resultMap>
 
@@ -74,7 +100,7 @@
     </select>
 
     <resultMap id="findv2" type="com.atlas.entity.Flower">
-        <result property="florescence" column="florescence"></result>
+        <result property="department" column="department"></result>
         <collection property="picture" select="findpicture2" column="name"></collection>
     </resultMap>
 

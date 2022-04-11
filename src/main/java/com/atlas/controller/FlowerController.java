@@ -78,6 +78,13 @@ public class FlowerController {
         return flowerService.classifyvariety(flower);
     }
 
+    //分类花色
+    @ResponseBody
+    @PostMapping("/classifycolor")
+    public List<Flower> classifycolor(@RequestBody Flower flower){
+        return flowerService.classifycolor(flower);
+    }
+
     //分类品种
     @ResponseBody
     @PostMapping("/findvariety")
@@ -90,5 +97,12 @@ public class FlowerController {
     @PostMapping("/findflorescence")
     public List<Flower> findflorescence(){
         return flowerService.findflorescence();
+    }
+
+    //分类颜色
+    @ResponseBody
+    @PostMapping("/findcolor")
+    public List<Flower> findcolor(){
+        return flowerService.findcolor();
     }
 }

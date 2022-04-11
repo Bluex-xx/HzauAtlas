@@ -12,14 +12,14 @@
     </update>
 
     <select id="recommendcat" parameterType="java.util.List" resultType="java.util.List">
-        select p.*,c.name from picture p,cat c where p.cid=f.cid and p.cid in
+        select p.* from picture p where p.cid in
         <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
             #{item}
         </foreach>
     </select>
 
     <select id="recommendflower" parameterType="java.util.List" resultType="java.util.List">
-        select p.*,f.name from picture p,flower f where p.fid=f.fid and p.fid in
+        select p.* from picture p where p.fid in
         <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
             #{item}
         </foreach>

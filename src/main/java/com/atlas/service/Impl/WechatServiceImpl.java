@@ -22,10 +22,13 @@ public class WechatServiceImpl implements WechatService {
         String response = HttpRequest.get("https://api.weixin.qq.com/sns/jscode2session").form(data).body();
         System.out.println("Response was: " + response);
         int begin=response.indexOf("openid");
-        String uid=response.substring(begin+9,response.length()-2);
-        String uid1=response.substring(begin+7,response.length());
-        System.out.println(uid1);
-        System.out.println(uid);
+        String uid=null;
+        if(begin==-1){
+            return uid;
+        }else{
+            uid=response.substring(begin+9,response.length()-2);
+            System.out.println(uid);
+        }
         JSONObject obj= JSON.parseObject(response);//将json字符串转换为json对
         System.out.println(obj);
         return uid;

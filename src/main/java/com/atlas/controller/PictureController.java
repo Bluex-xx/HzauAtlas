@@ -8,7 +8,10 @@ import com.atlas.service.Impl.CatServiceImpl;
 import com.atlas.service.Impl.FlowerServiceImpl;
 import com.atlas.service.Impl.PictureServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.ListOperations;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,10 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.persistence.criteria.CriteriaBuilder;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -34,6 +34,8 @@ public class PictureController {
     private FlowerServiceImpl flowerService;
     @Resource
     private StringRedisTemplate stringRedisTemplate;
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     //为照片点赞，会存入redis数据库
     @ResponseBody
@@ -68,20 +70,40 @@ public class PictureController {
         return isMember;
     }
 
+    @Scheduled(fixedDelay = 60000)
+    public void updaterecommend(){
+        List<Cat> catList= catService.recommend();
+        List<Flower> flowerList= flowerService.recommend();
+        String key1="cat";
+        String key2="flower";
+        redisTemplate.delete(key1);
+        redisTemplate.delete(key2);
+        ListOperations<String,Cat> catListOperations= redisTemplate.opsForList();
+        ListOperations<String,Flower> flowerListOperations= redisTemplate.opsForList();
+        catListOperations.leftPushAll(key1,catList);
+        flowerListOperations.leftPushAll(key2,flowerList);
+        System.out.println(new Date());
+    }
+
     //主页推荐，根据点赞数量进行排序
     @ResponseBody
     @PostMapping("/recommend")
     public List<Object> recommend(@RequestBody Picture picture){
-        List<Cat> catList= catService.recommend();
-        List<Flower> flowerList= flowerService.recommend();
+        List<Cat> catList= new ArrayList<>();
+        List<Flower> flowerList= new ArrayList<>();
         List<Object> objectList=new ArrayList<>();
+        ListOperations<String,Cat> catListOperations= redisTemplate.opsForList();
+        ListOperations<String,Flower> flowerListOperations= redisTemplate.opsForList();
+
         if(picture.getType()==1){
+            catList= catListOperations.range("cat",0,-1);
             catList.forEach(cat -> {
                 cat.getPicture().setUid(picture.getUid());
                 isliked(cat.getPicture());
         });
            objectList=new ArrayList<>(catList);
         }else{
+            flowerList= flowerListOperations.range("flower",0,-1);
             flowerList.forEach(flower -> {
                 flower.getPicture().setUid(picture.getUid());
                 isliked(flower.getPicture());

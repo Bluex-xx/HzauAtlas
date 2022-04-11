@@ -6,13 +6,14 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.Transient;
+import java.io.Serializable;
 import java.util.List;
 
 @Data
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class Cat {
+public class Cat implements Serializable {
     private Integer cid;
     private String name;
     private String color;
