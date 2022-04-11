@@ -72,7 +72,7 @@ button.data-v-202e5804::after {
 .back.data-v-202e5804
 	{
 		position: fixed;
-		top: 95rpx;
+		top: 70rpx;
 		left: 35rpx;
 		width: 50rpx;
 		height: 50rpx;

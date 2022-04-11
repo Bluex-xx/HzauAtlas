@@ -1,9 +1,13 @@
 <template>
 	<view class="content">
-		<image @click="backToLast" src="../../../static/back-icon.png" class="back"></image>
 		<view class="detail_banner">
-			<image :src="list.pictureList[0].store" mode="aspectFill" style="height: 100%;width: 100%;"></image>
+			<u--image :src="list.pictureList[0].store" mode="aspectFill" height="550rpx" width="750rpx">
+			  <template v-slot:loading>
+			    <u-loading-icon color="red"></u-loading-icon>
+			  </template>
+			</u--image>
 		</view>
+		<image @click="backToLast" src="../../../static/back-icon.png" class="back"></image>
 <!-- 		猫猫信息 -->
         <view class="cat_information_bg">
         	<view class="cat_title">
@@ -12,9 +16,7 @@
 			<view class="title_line"></view>
 			<image @click="islike()" v-show="!list.pictureList[0].islike" src="../../../static/heart-icon.png" class="love"></image>
 		    <image @click="islike()" v-show="list.pictureList[0].islike" src="../../../static/heart-icon-selected.png" class="love"></image>
-			<!-- <image  src="../../../static/share-icon.png" class="share"></image> -->
 			<button  class="share" type="default" open-type="share"></button>
-			<!-- @click="sharevx(list.pictureList[0].store)" -->
 			<view class="main_text">
 			<view class="cat_name">
 				<image src="../../../static/name-icon.png" class="name_icon"></image>
@@ -58,8 +60,12 @@
 		</view>
 		<view class="title_line" style="width: 130rpx;"></view>	
 		<view class="main_photo">
-			<view v-for="i in list.pictureList" class="photo_one" @click="previewImg(i.store)">
-				<image :src="i.store" mode="aspectFill" style="width: 100%;height: 100%;"></image>
+			<view v-for="(i,index) in list.pictureList" :key="index" class="photo_one" @click="previewImg(i.store)">
+				<u--image :src="i.store" mode="aspectFill" height="183rpx" width="183rpx">
+				  <template v-slot:loading>
+				    <u-loading-icon color="red"></u-loading-icon>
+				  </template>
+				</u--image>
 			</view>
 		</view>
 		</view>
@@ -104,7 +110,7 @@ export default {
 			},
 			//点赞函数
 			islike(){
-				api.picLike({uid:1,pid:this.list.pid}).then(
+				api.picLike({uid:1,pid:this.list.pictureList[0].pid}).then(
 				res => {
 						if(res=="操作成功")
 						{
@@ -160,12 +166,7 @@ export default {
 			return {
 				title: '狮山图tututu鉴',
 				path: `/packageA/pages/detail/detail?data=${this.list.pid}&tabindex=${this.tabindex}`,
-				imageUrl: this.list.pictureList[0].store,
-				// success(res) {
-				// 	uni.showToast({
-				// 		title:'分享成功'
-				// 	})
-				// }
+				imageUrl: this.list.pictureList[0].store
 			}
 		}
 	}
@@ -244,7 +245,7 @@ export default {
 	.back
 	{
 		position: fixed;
-		top: 95rpx;
+		top: 70rpx;
 		left: 35rpx;
 		width: 50rpx;
 		height: 50rpx;

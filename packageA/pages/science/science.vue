@@ -2,7 +2,7 @@
 	<view class="content">
 		<image @click="backToLast" src="../../../static/back-icon.png" class="back"></image>
 		<view class="science_banner">
-			<image src="https://img-1254085044.cos.ap-nanjing.myqcloud.com/static/science-bg.png" mode="aspectFill" style="height: 100%;width: 100%;"></image>
+			<image src="https://somecute.cn/img/static/science-bg.jpg" mode="aspectFill" style="height: 100%;width: 100%;"></image>
 		</view>
 		<view class="science_main">
 			<view class="science_title">

@@ -8,6 +8,10 @@ import minRequest from './MinRequest';
 // export default {
 //  //这里统一管理api请求
 const api = {
+	login(data) {
+		return minRequest('cis/login', data, 'POST')
+	},
+	
 	//首页推荐接口
     indexRecommand(data) {
 		return minRequest('picture/recommend', data, 'POST');

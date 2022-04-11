@@ -3,7 +3,7 @@
 		<view class="header">
 			<image @click="backToLast" src="../../../static/back-icon.png" class="back"></image>
 			
-			<image class="header_img" src="https://img-1254085044.cos.ap-nanjing.myqcloud.com/static/flower_header.jpg" mode="aspectFill"></image>
+			<image class="header_img" src="https://somecute.cn/img/static/flower_header.jpg" mode="aspectFill"></image>
 		</view>
 		
 		<view class="content">
@@ -16,14 +16,16 @@
 			<scroll-view class="content_main" scroll-x="true">
 				<view class="content_main_item" v-for="item in categoryList" :key="item">
 					<view class="content_item_imgbox">
-						<image class="content_item_img" :src="item.picture.store" mode="aspectFill"  @click="previewImg(item.picture.store)"></image>
+					    <u--image class="content_item_img" :src="item.picture.store" mode="aspectFill"  @click="previewImg(item.picture.store)" width="471rpx" height="577rpx">
+					      <template v-slot:loading>
+					        <u-loading-icon color="red"></u-loading-icon>
+					      </template>
+					    </u--image>
 					</view>
-					
 					<view class="content_item_line">
 						<view class="content_item_name">
 							{{ item.name }}
 						</view>
-						<!-- <image class="content_item_like" src="../../../static/heart-icon-selected.png" mode="aspectFit"></image> -->
 					</view>
 					
 					<image class="content_item_more"src="../../../static/more.png" mode="aspectFit" @click="toDetail(item)"></image>
@@ -50,7 +52,7 @@
 						name: '名称1',
 						picture: {
 							pid: '1',
-							store: 'https://img-1254085044.cos.ap-nanjing.myqcloud.com/static/flower_list.jpg'
+							store: 'https://somecute.cn/img/static/flower_list.jpg'
 						}
 					}
 				]

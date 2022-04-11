@@ -33,16 +33,24 @@
 		 </view>
 	 </view>
 	 <view class="cat_list">
-	 	<view v-if="searchstate==0" v-for="(i,index) in list" class="cat_one">
-			<image @click="todetail(i.picture.pid,tabindex)" :src="i.picture.store" class="cat_one_image" mode="aspectFill"></image>
+	 	<view v-if="searchstate==0" v-for="(i,index) in list" class="cat_one" :key="index">
+			<u--image @click="todetail(i.picture.pid,tabindex)" :src="i.picture.store" class="cat_one_image" mode="aspectFill" :lazy-load="true" width="309.6rpx" height="400rpx">
+			  <template v-slot:loading>
+			    <u-loading-icon mode="circle" color="red"></u-loading-icon>
+			  </template>
+			</u--image>		
 			<view class="cat_name">
 				{{i.picture.name}}
 			</view>
 			<image @click="islike(i.picture.pid,index)" v-show="!i.picture.islike" src="../../static/heart-icon.png"  class="love"></image>
 			<image @click="islike(i.picture.pid,index)" v-show="i.picture.islike" src="../../static/heart-icon-selected.png"  class="love"></image>
 	 	</view>
-		<view v-if="searchstate==1" v-for="(i,index) in list" class="cat_one">
-					<image @click="todetail(i.pid,tabindex)" :src="i.store" class="cat_one_image" mode="aspectFill"></image>
+		<view v-if="searchstate==1" v-for="(i,index) in list" class="cat_one" :key="index">
+			        <u--image  @click="todetail(i.pid,tabindex)" :src="i.store" class="cat_one_image" mode="aspectFill" :lazy-load="true" width="309.6rpx" height="400rpx" lazyload="true">
+			          <template v-slot:loading>
+			            <u-loading-icon mode="circle" color="red"></u-loading-icon>
+			          </template>
+			        </u--image>
 					<view class="cat_name">
 						{{i.name}}
 					</view>
@@ -94,49 +102,60 @@
 						})
 			},
 			search(){
-				if(this.tabindex==1)
+				if(this.value=="")
 				{
-					//搜索猫猫
-					api.indexCatSearch({uid:1,information:this.value}).then(
-					res => {
-								if(res.length==0)
-								{
-									uni.showModal({
-										content: '没有搜到噢',
-										showCancel: false
-									});
-								}
-								else
-								{
-									this.list = res;
-									console.log(this.list);
-									this.searchstate=1;
-								}
-							 }).catch(err => {
-							 	console.log(err)
-							 })  
-					
+					uni.showModal({
+						content: '输入为空，请正确输入',
+						showCancel: false
+					});
 				}
-                else
+				else
 				{
-					//搜索花花
-					api.indexFlowerSearch({uid:1,information:this.value}).then(
-					res => {
-								if(res.length==0)
-								{
-									uni.showModal({
-										content: '没有搜到噢',
-										showCancel: false
-									});
-								}
-								else
-								{
-									this.list = res
-								}
-							}).catch(err => {
-								console.log(err)
-							})
+					if(this.tabindex==1)
+					{
+						//搜索猫猫
+						api.indexCatSearch({uid:1,information:this.value}).then(
+						res => {
+									if(res.length==0)
+									{
+										uni.showModal({
+											content: '没有搜到噢',
+											showCancel: false
+										});
+									}
+									else
+									{
+										this.list = res;
+										this.searchstate=1;
+									}
+								 }).catch(err => {
+								 	console.log(err)
+								 })  
+						
+					}
+					else
+					{
+						//搜索花花
+						api.indexFlowerSearch({uid:1,information:this.value}).then(
+						res => {
+									if(res.length==0)
+									{
+										uni.showModal({
+											content: '没有搜到噢',
+											showCancel: false
+										});
+									}
+									else
+									{
+										this.list = res;
+										this.searchstate=1;
+									}
+								}).catch(err => {
+									console.log(err)
+								})
+					}
 				}
+				
 			},
 			//导航切换
 			changeselect(data){

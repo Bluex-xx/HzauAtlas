@@ -2,5 +2,8 @@
   "navigationStyle": "custom",
   "enablePullDownRefresh": true,
   "onReachBottomDistance": 100,
-  "usingComponents": {}
+  "usingComponents": {
+    "u--image": "/node-modules/uview-ui/components/u--image/u--image",
+    "u-loading-icon": "/node-modules/uview-ui/components/u-loading-icon/u-loading-icon"
+  }
 }

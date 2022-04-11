@@ -93,6 +93,32 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "recyclableRender", function() { return recyclableRender; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components
+try {
+  components = {
+    "u-Image": function() {
+      return Promise.all(/*! import() | node-modules/uview-ui/components/u--image/u--image */[__webpack_require__.e("common/vendor"), __webpack_require__.e("node-modules/uview-ui/components/u--image/u--image")]).then(__webpack_require__.bind(null, /*! uview-ui/components/u--image/u--image.vue */ 186))
+    },
+    uLoadingIcon: function() {
+      return Promise.all(/*! import() | node-modules/uview-ui/components/u-loading-icon/u-loading-icon */[__webpack_require__.e("common/vendor"), __webpack_require__.e("node-modules/uview-ui/components/u-loading-icon/u-loading-icon")]).then(__webpack_require__.bind(null, /*! uview-ui/components/u-loading-icon/u-loading-icon.vue */ 192))
+    }
+  }
+} catch (e) {
+  if (
+    e.message.indexOf("Cannot find module") !== -1 &&
+    e.message.indexOf(".vue") !== -1
+  ) {
+    console.error(e.message)
+    console.error("1. 排查组件名称拼写是否正确")
+    console.error(
+      "2. 排查组件是否符合 easycom 规范，文档：https://uniapp.dcloud.net.cn/collocation/pages?id=easycom"
+    )
+    console.error(
+      "3. 若组件不符合 easycom 规范，需手动引入，并在 components 中注册该组件"
+    )
+  } else {
+    throw e
+  }
+}
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
@@ -131,6 +157,12 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
+
+
+
+
+
+
 
 
 
@@ -267,20 +299,20 @@ var _api = _interopRequireDefault(__webpack_require__(/*! @/api/api.js */ 16));f
 //
 //
 //
+//
+//
+//
+//
+//
+//
 var _default = { data: function data() {return { title: "猫猫信息", photo_title: "照片集", pid: "", list: "", tabindex: "" };}, methods: { // 返回上一页面
     backToLast: function backToLast() {var pages = getCurrentPages();if (pages[pages.length - 2]) {uni.navigateBack({ url: pages[pages.length - 2].route });} else {uni.switchTab({ url: '../../../pages/index/index' });}}, //照片集放大预览
     previewImg: function previewImg(data) {uni.previewImage({ // 当前需要预览的图片
         current: "" + data, //所有图片
         urls: [data] });}, //点赞函数
-    islike: function islike() {var _this = this;_api.default.picLike({ uid: 1, pid: this.list.pid }).then(function (res) {if (res == "操作成功") {_this.list.pictureList[0].islike = !_this.list.pictureList[0].islike;console.log(_this.list.pictureList[0].islike);}}).catch(function (err) {console.log(err);});} }, onLoad: function onLoad(option) {var _this2 = this;var pages = getCurrentPages();if (pages[pages.length - 2]) {if (pages[pages.length - 2].route == 'packageA/pages/list/list') {this.tabindex = uni.getStorageSync('categoryindex');} else {this.tabindex = uni.getStorageSync('tabindex');}} else {this.tabindex = option.tabindex;}if (this.tabindex == 1) {//获取猫咪详情
-      _api.default.catDetail({ uid: 1, pid: option.data }).then(function (res) {_this2.list = res;}).catch(function (err) {console.log(err);});} else {
-      this.title = '花花信息';
-      //获取花花详情
-      _api.default.flowerDetail({ uid: 1, pid: option.data }).then(
-      function (res) {
-        _this2.list = res;
-      }).catch(function (err) {
-        console.log(err);
+    islike: function islike() {var _this = this;_api.default.picLike({ uid: 1, pid: this.list.pictureList[0].pid }).then(function (res) {if (res == "操作成功") {_this.list.pictureList[0].islike = !_this.list.pictureList[0].islike;console.log(_this.list.pictureList[0].islike);}}).catch(function (err) {console.log(err);});} }, onLoad: function onLoad(option) {var _this2 = this;var pages = getCurrentPages();if (pages[pages.length - 2]) {if (pages[pages.length - 2].route == 'packageA/pages/list/list') {this.tabindex = uni.getStorageSync('categoryindex');} else {this.tabindex = uni.getStorageSync('tabindex');}} else {this.tabindex = option.tabindex;}if (this.tabindex == 1) {//获取猫咪详情
+      _api.default.catDetail({ uid: 1, pid: option.data }).then(function (res) {_this2.list = res;}).catch(function (err) {console.log(err);});} else {this.title = '花花信息'; //获取花花详情
+      _api.default.flowerDetail({ uid: 1, pid: option.data }).then(function (res) {_this2.list = res;}).catch(function (err) {console.log(err);
       });
     }
   },
@@ -292,13 +324,8 @@ var _default = { data: function data() {return { title: "猫猫信息", photo_ti
     return {
       title: '狮山图tututu鉴',
       path: "/packageA/pages/detail/detail?data=".concat(this.list.pid, "&tabindex=").concat(this.tabindex),
-      imageUrl: this.list.pictureList[0].store
-      // success(res) {
-      // 	uni.showToast({
-      // 		title:'分享成功'
-      // 	})
-      // }
-    };
+      imageUrl: this.list.pictureList[0].store };
+
   } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 

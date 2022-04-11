@@ -176,6 +176,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
 var _api = _interopRequireDefault(__webpack_require__(/*! @/api/api.js */ 16));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };} //
 //
 //
@@ -221,29 +223,37 @@ var _api = _interopRequireDefault(__webpack_require__(/*! @/api/api.js */ 16));f
 //
 //
 //
-var _default = { data: function data() {return { category: 0, contentTitle: '花花分类', // selectButton: buttonName,
+//
+//
+var _default = { data: function data() {return { category: 0, index: '', contentTitle: '花花分类', // selectButton: buttonName,
       selectContentList: [], selectFlowerList: ['花色', '花期', '品种', '生长位置'], selectCatList: ['毛色', '出没位置'], contentList: [//对象数组，包含类别名称和具有该类别的典型特征的猫/花的图片
-      '红'] };}, created: function created() {// this.selectContentList = this.selectFlowerList
+      { department: '', florescence: '', color: '', picture: { store: '' } }] };}, created: function created() {// this.selectContentList = this.selectFlowerList
     // 获取默认大类的小类列表
     // 获取默认小类中的具体内容
-  }, methods: { changeCategory: function changeCategory() {if (this.category == 0) {this.category = 1;this.contentTitle = '猫猫分类';this.selectContentList = this.selectCatList;} else {this.category = 0;this.contentTitle = '花花分类';this.selectContentList = this.selectFlowerList;} // 获取详细分类方式list，即左侧选择分类按钮
-      // 获取两个大类中选中的一个的默认第一个小类中具体内容，即猫的毛列表和花的花色列表
+  }, methods: { changeCategory: function changeCategory() {if (this.category == 0) {this.category = 1;this.contentTitle = '猫猫分类';this.selectContentList = this.selectCatList;this.selectCategory(0);} else {this.category = 0;this.contentTitle = '花花分类';this.selectContentList = this.selectFlowerList;this.selectCategory(1);} // 获取两个大类中选中的一个的默认第一个小类中具体内容，即猫的毛列表和花的花色列表
     }, selectCategory: function selectCategory(index) {var _this = this; // 获取用户选中的按钮的信息，并作为传给后端的参数
-      // 获取相应数据
-      if (this.category) {if (index == 0) {uni.setStorageSync('categoryitem', this.selectCatList[index]);_api.default.catColorCategory().then(function (res) {console.log(res);_this.contentList = res;});}
+      // 获取详细分类方式list，即左侧选择分类按钮
+      if (this.category) {
+        if (index == 0) {
+          this.index = index;
+          uni.setStorageSync('categoryitem', this.selectCatList[index]);
+          _api.default.catColorCategory().then(function (res) {
+            _this.contentList = res;
+          });
+        }
       } else
       {
         if (index == 1) {
+          this.index = index;
           uni.setStorageSync('categoryitem', this.selectFlowerList[index]);
           _api.default.flowerStateCategory().then(function (res) {
-            console.log(res);
             _this.contentList = res;
           });
         } else
         if (index == 2) {
+          this.index = index;
           uni.setStorageSync('categoryitem', this.selectFlowerList[index]);
           _api.default.flowerVarietyCategory().then(function (res) {
-            console.log(res);
             _this.contentList = res;
           });
         }
@@ -260,7 +270,7 @@ var _default = { data: function data() {return { category: 0, contentTitle: '花
 
   mounted: function mounted() {
     this.selectContentList = this.selectFlowerList;
-    this.selectCategory();
+    this.selectCategory(1);
   } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 

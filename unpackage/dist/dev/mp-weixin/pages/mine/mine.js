@@ -190,35 +190,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 var _api = _interopRequireDefault(__webpack_require__(/*! ../../api/api.js */ 16));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };} //
 //
 //
@@ -278,36 +249,49 @@ var _api = _interopRequireDefault(__webpack_require__(/*! ../../api/api.js */ 16
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-var _default = { data: function data() {return { userInfo: { avatar: 'https://img-1254085044.cos.ap-nanjing.myqcloud.com/static/20210927224434.jpg', nickname: 'bluexx' }, like_list: [{ name: 'Cat', content: ['1111'] }, { name: 'Flower', content: ['2222'] }], tab_1: "猫猫", tab_2: "花花", tabindex: 1 };}, methods: { changeselect: function changeselect(data) {this.tabindex = data;this.getLike();}, todetail: function todetail() {uni.navigateTo({ url: '../../packageA/pages/detail/detail' });}, getLike: function getLike() {var _this = this;_api.default.userLikePic({ uid: '001', type: this.tabindex }).then(function (res) {_this.like_list[_this.tabindex - 1].content = res;});} }, mounted: function mounted() {this.getLike();} };exports.default = _default;
+var _default = { data: function data() {return { userInfo: { avatar: '', nickname: '' }, like_list: [{ name: 'Cat', content: ['1111'] }, { name: 'Flower', content: ['2222'] }], tab_1: "猫猫", tab_2: "花花", tabindex: 1 };}, methods: { changeselect: function changeselect(data) {this.tabindex = data;this.getLike();}, todetail: function todetail() {uni.navigateTo({ url: '../../packageA/pages/detail/detail' });}, getLike: function getLike() {var _this = this;_api.default.userLikePic({ uid: '001', type: this.tabindex }).then(function (res) {_this.like_list[_this.tabindex - 1].content = res;});}, login: function login() {uni.login({ provider: 'weixin', success: function success(res) {uni.setStorageSync('code', res.code);_api.default.login({ code: res.code }).then(function (res) {console.log(res);uni.setStorage({ key: 'token', data: res.token });});}, fail: function fail(err) {uni.showToast({ title: err.errMsg });} });
+
+    },
+    userAuthorize: function userAuthorize() {
+      uni.getUserProfile({
+        desc: '登录需要获取您的用户信息',
+        success: function success(res) {
+          // console.log(res)
+          var temp = {
+            avatar: res.userInfo.avatarUrl,
+            nickname: res.userInfo.nickName };
+
+          uni.setStorageSync('userInfo', temp);
+        } });
+
+
+      this.getUserInfo();
+    },
+    getUserInfo: function getUserInfo() {
+      this.userInfo = uni.getStorageSync('userInfo');
+      console.log(this.userInfo);
+    } },
+
+  onLoad: function onLoad() {
+    // this.userInfo = uni.getStorageSync('userInfo')
+    // this.userAuthorize()
+    // uni.checkSession({  
+    // 	success(res) {
+    // 		console.log(res)
+    // 	},
+    // 	fail(err) {
+    // 		console.log(err)
+    // 	}
+    // })
+
+    // if(uni.getStorageSync('token')) {
+    // 	console.log('has token')
+    // }
+    // else {
+    // 	this.login()
+    // }
+    // this.getLike()			
+  } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),

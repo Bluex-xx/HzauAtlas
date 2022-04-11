@@ -1,9 +1,9 @@
 <template>
 	<view>
 		<view class="header">
-			<image class="header_avatar_bg" src="https://img-1254085044.cos.ap-nanjing.myqcloud.com/static/timg1.jpg"></image>
+			<image class="header_avatar_bg" src="https://somecute.cn/img/static/mine_bg.jpg" mode='aspectFill'></image>
 			
-			<view class="" v-if="userInfo">
+			<view class="" v-if="userInfo.nickname">
 				<image class="header_avatar" :src="userInfo.avatar" mode="aspectFill">
 					头像
 				</image>
@@ -14,9 +14,9 @@
 			
 			<view class="" v-else>
 				<image class="header_avatar" src="../../static/userInfo.png" mode="aspectFill"></image>
-				<view class="header_nickname">
-					昵称
-				</view>
+				<button class="header_nickname" @click="userAuthorize()">
+					登录
+				</button>
 			</view>
 		</view>
 		
@@ -25,29 +25,7 @@
 				<image class="like_icon" src="../../static/like.png" mode="aspectFill"></image>
 				like
 			</view>
-			
-			<!-- <view class="content_category">
-			<template class="">
-				<u-sticky bgColor="#aaaaff">
-				<u-tabs
-					:list="like_list"
-			        lineWidth="30"
-			        lineColor="#FAACA8"
-			        :activeStyle="{
-			  			color: '#303133',
-			  			fontWeight: 'bold',
-			  			transform: 'scale(1.05)'
-			  		}"
-			        :inactiveStyle="{
-			  			color: '#706868',
-			  			transform: 'scale(1)'
-			  		}"
-			        itemStyle="padding-left: 15px; padding-right: 15px; height: 34px;"
-			      >
-			    </u-tabs>
-				</u-sticky>
-			</template>
-		</view> -->
+		
 		<view class="content_category">
 		<view class="tabs">
 			<view @click="changeselect(1)">
@@ -66,17 +44,10 @@
 				<view v-show="tabindex==2" class="tabline-2"></view>
 			</view>
 		
-			
-			<!-- <view class="cat_list">
-				<view v-for="i in 8" class="cat_one">
-						<image @click="todetail" src="../../static/cat_img/2.jpg" class="cat_one_image" mode="aspectFill"></image>
-				</view>
-			</view> -->
-		
 			<view class="main_photo">
 				<view v-for="i in like_list[tabindex-1].content" class="photo_one" @click="todetail()">
-					<image src="https://img-1254085044.cos.ap-nanjing.myqcloud.com/static/1.jpg" mode="aspectFill" style="width: 100%;height: 100%;"></image>
-					{{ i }}
+					<image src="https://somecute.cn/img/static/2.jpg" mode="aspectFill" style="width: 100%;height: 100%;"></image>
+					<!-- {{ i }} -->
 				</view>
 			</view>
 			</view>
@@ -92,8 +63,8 @@
 		data() {
 			return {
 				userInfo: {
-					avatar: 'https://img-1254085044.cos.ap-nanjing.myqcloud.com/static/20210927224434.jpg',
-					nickname: 'bluexx'
+					avatar: '',
+					nickname: ''
 				},
 				like_list: [{
 				    name: 'Cat',
@@ -128,10 +99,28 @@
 				}).then(res => {
 					this.like_list[this.tabindex-1].content = res
 				})
-			}
+			},
+			
 		},
-		mounted() {
-			this.getLike()
+		onLoad() {
+			// this.userInfo = uni.getStorageSync('userInfo')
+			// this.userAuthorize()
+			// uni.checkSession({  
+			// 	success(res) {
+			// 		console.log(res)
+			// 	},
+			// 	fail(err) {
+			// 		console.log(err)
+			// 	}
+			// })
+			
+			// if(uni.getStorageSync('token')) {
+			// 	console.log('has token')
+			// }
+			// else {
+			// 	this.login()
+			// }
+			// this.getLike()			
 		}
 	}
 </script>

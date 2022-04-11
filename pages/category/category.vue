@@ -16,10 +16,6 @@
 				<button type="default" :buttonName='index' @click="selectCategory(index)">{{ item }}</button>
 			</view>
 			
-			<!-- <view class="buttons" v-else >
-				<button type="default" buttonName='catColor'>毛色</button>
-				<button type="default" buttonName='catPosition'>出没位置</button>
-			</view> -->
 		</view>
 		
 		<view class="content">
@@ -32,10 +28,16 @@
 			
 			<!-- 分类内容 -->
 			<view class="content_main">
-				<view class="content_main_item" v-for="item in contentList" :key="item" @click="toList(item)">
-					<image class="content_main_item_image" src="https://img-1254085044.cos.ap-nanjing.myqcloud.com/static/3.jpg" mode="aspectFill"></image>
-					<view class="content_main_item_text">
-						{{ item }}
+				<view class="content_main_item" v-for="item in contentList" :key="item" @click="toList(item.florescence || item.department || item.color)">
+					<image class="content_main_item_image" :src="item.picture.store" mode="aspectFill"></image>
+					<view class="content_main_item_text" v-show="category==0 && index == 1 && item.florescence">
+						{{ item.florescence }}
+					</view>
+					<view class="content_main_item_text" v-show="category==0 && index == 2 && item.department">
+						{{ item.department }}
+					</view>
+					<view class="content_main_item_text" v-show="category==1 && index == 0 && item.color">
+						{{ item.color }}
 					</view>
 				</view>
 			</view>
@@ -49,6 +51,7 @@
 		data() {
 			return {
 				category: 0,
+				index: '',
 				contentTitle: '花花分类',
 				// selectButton: buttonName,
 				selectContentList:[],
@@ -63,7 +66,14 @@
 					'出没位置'
 				],
 				contentList: [              //对象数组，包含类别名称和具有该类别的典型特征的猫/花的图片
-					'红'
+					{
+						department: '',
+						florescence: '',
+						color: '',
+						picture: {
+							store: ''
+						}
+					}
 				]
 			}
 		},
@@ -78,40 +88,40 @@
 					this.category = 1;
 					this.contentTitle = '猫猫分类';
 					this.selectContentList = this.selectCatList
+					this.selectCategory(0)
 				}
 				else {
 					this.category = 0;
 					this.contentTitle = '花花分类';
 					this.selectContentList = this.selectFlowerList
+					this.selectCategory(1)
 				}
-				
-				// 获取详细分类方式list，即左侧选择分类按钮
 				// 获取两个大类中选中的一个的默认第一个小类中具体内容，即猫的毛列表和花的花色列表
 			},
 			selectCategory(index) {
 				// 获取用户选中的按钮的信息，并作为传给后端的参数
-				// 获取相应数据
+				// 获取详细分类方式list，即左侧选择分类按钮
 				if(this.category) {
 					if(index == 0) {
+						this.index = index
 						uni.setStorageSync('categoryitem', this.selectCatList[index])
 						api.catColorCategory().then(res => {
-							console.log(res)
 							this.contentList = res
 						})
 					}
 				}
 				else {
 					if(index == 1) {
+						this.index = index
 						uni.setStorageSync('categoryitem', this.selectFlowerList[index])
 						api.flowerStateCategory().then(res => {
-							console.log(res)
-							this.contentList = res
+							this.contentList = res					
 						})
 					}
 					else if(index == 2) {
+						this.index = index
 						uni.setStorageSync('categoryitem', this.selectFlowerList[index])
 						api.flowerVarietyCategory().then(res => {
-							console.log(res)
 							this.contentList = res
 						})
 					}
@@ -128,7 +138,7 @@
 		},
 		mounted() {
 			this.selectContentList = this.selectFlowerList
-			this.selectCategory()
+			this.selectCategory(1)
 		}
 	}
 </script>

@@ -93,6 +93,32 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "recyclableRender", function() { return recyclableRender; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components
+try {
+  components = {
+    "u-Image": function() {
+      return Promise.all(/*! import() | node-modules/uview-ui/components/u--image/u--image */[__webpack_require__.e("common/vendor"), __webpack_require__.e("node-modules/uview-ui/components/u--image/u--image")]).then(__webpack_require__.bind(null, /*! uview-ui/components/u--image/u--image.vue */ 186))
+    },
+    uLoadingIcon: function() {
+      return Promise.all(/*! import() | node-modules/uview-ui/components/u-loading-icon/u-loading-icon */[__webpack_require__.e("common/vendor"), __webpack_require__.e("node-modules/uview-ui/components/u-loading-icon/u-loading-icon")]).then(__webpack_require__.bind(null, /*! uview-ui/components/u-loading-icon/u-loading-icon.vue */ 192))
+    }
+  }
+} catch (e) {
+  if (
+    e.message.indexOf("Cannot find module") !== -1 &&
+    e.message.indexOf(".vue") !== -1
+  ) {
+    console.error(e.message)
+    console.error("1. 排查组件名称拼写是否正确")
+    console.error(
+      "2. 排查组件是否符合 easycom 规范，文档：https://uniapp.dcloud.net.cn/collocation/pages?id=easycom"
+    )
+    console.error(
+      "3. 若组件不符合 easycom 规范，需手动引入，并在 components 中注册该组件"
+    )
+  } else {
+    throw e
+  }
+}
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
@@ -167,6 +193,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
 var _api = _interopRequireDefault(__webpack_require__(/*! @/api/api.js */ 16));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };} //
 //
 //
@@ -203,9 +231,9 @@ var _api = _interopRequireDefault(__webpack_require__(/*! @/api/api.js */ 16));f
 //
 //
 //
-var _default = { data: function data() {return { scrollTop: 0, old: { scrollTop: 0 }, categoryTitle: '纯色', categoryList: [{ cid: '1', name: '名称1', picture: { pid: '1', store: 'https://img-1254085044.cos.ap-nanjing.myqcloud.com/static/flower_list.jpg' } }] };}, onLoad: function onLoad(option) {var _this = this;if (uni.getStorageSync('categoryindex') == 1) {if (uni.getStorageSync('categoryitem') == '毛色') {_api.default.catSort({ color: option.data }).then(function (res) {_this.categoryTitle = option.data;_this.categoryList = res;});}} else {uni.setStorageSync('categoryindex', 2);if (uni.getStorageSync('categoryitem') == '花期') {_api.default.flowerSortState({ florescence: option.data }).then(function (res) {_this.categoryTitle = option.data;_this.categoryList = res;
-        });
-      } else
+//
+//
+var _default = { data: function data() {return { scrollTop: 0, old: { scrollTop: 0 }, categoryTitle: '纯色', categoryList: [{ cid: '1', name: '名称1', picture: { pid: '1', store: 'https://somecute.cn/img/static/flower_list.jpg' } }] };}, onLoad: function onLoad(option) {var _this = this;if (uni.getStorageSync('categoryindex') == 1) {if (uni.getStorageSync('categoryitem') == '毛色') {_api.default.catSort({ color: option.data }).then(function (res) {_this.categoryTitle = option.data;_this.categoryList = res;});}} else {uni.setStorageSync('categoryindex', 2);if (uni.getStorageSync('categoryitem') == '花期') {_api.default.flowerSortState({ florescence: option.data }).then(function (res) {_this.categoryTitle = option.data;_this.categoryList = res;});} else
       if (uni.getStorageSync('categoryitem') == '品种') {
         _api.default.flowerSortVariety({ department: option.data }).then(function (res) {
           _this.categoryTitle = option.data;

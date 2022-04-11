@@ -93,6 +93,32 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "recyclableRender", function() { return recyclableRender; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components
+try {
+  components = {
+    "u-Image": function() {
+      return Promise.all(/*! import() | node-modules/uview-ui/components/u--image/u--image */[__webpack_require__.e("common/vendor"), __webpack_require__.e("node-modules/uview-ui/components/u--image/u--image")]).then(__webpack_require__.bind(null, /*! uview-ui/components/u--image/u--image.vue */ 186))
+    },
+    uLoadingIcon: function() {
+      return Promise.all(/*! import() | node-modules/uview-ui/components/u-loading-icon/u-loading-icon */[__webpack_require__.e("common/vendor"), __webpack_require__.e("node-modules/uview-ui/components/u-loading-icon/u-loading-icon")]).then(__webpack_require__.bind(null, /*! uview-ui/components/u-loading-icon/u-loading-icon.vue */ 192))
+    }
+  }
+} catch (e) {
+  if (
+    e.message.indexOf("Cannot find module") !== -1 &&
+    e.message.indexOf(".vue") !== -1
+  ) {
+    console.error(e.message)
+    console.error("1. 排查组件名称拼写是否正确")
+    console.error(
+      "2. 排查组件是否符合 easycom 规范，文档：https://uniapp.dcloud.net.cn/collocation/pages?id=easycom"
+    )
+    console.error(
+      "3. 若组件不符合 easycom 规范，需手动引入，并在 components 中注册该组件"
+    )
+  } else {
+    throw e
+  }
+}
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
@@ -131,6 +157,14 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
+
+
+
+
+
+
+
+
 
 
 
@@ -243,32 +277,43 @@ var _api = _interopRequireDefault(__webpack_require__(/*! @/api/api.js */ 16));f
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 var _default = { data: function data() {return { title: "Hello", tip: "There are something cute...", value: "", tab_1: "猫猫", tab_2: "花花", tabindex: 1, searchstate: 0, list: { picture: "" } };}, methods: { //跳转详情页
     todetail: function todetail(data) {uni.navigateTo({ url: "../../packageA/pages/detail/detail?data=" + data });}, toscience: function toscience() {uni.navigateTo({ url: '../../packageA/pages/science/science' });}, //获取首页数据
-    getList: function getList() {var _this = this;_api.default.indexRecommand({ uid: 1, type: this.tabindex }).then(function (res) {_this.list = res;}).catch(function (err) {console.log(err);});}, search: function search() {var _this2 = this;if (this.tabindex == 1) {//搜索猫猫
-        _api.default.indexCatSearch({ uid: 1, information: this.value }).then(function (res) {if (res.length == 0) {uni.showModal({ content: '没有搜到噢', showCancel: false });} else {_this2.list = res;console.log(_this2.list);_this2.searchstate = 1;}}).catch(function (err) {console.log(err);});
+    getList: function getList() {var _this = this;_api.default.indexRecommand({ uid: 1, type: this.tabindex }).then(function (res) {_this.list = res;}).catch(function (err) {console.log(err);});}, search: function search() {var _this2 = this;if (this.value == "") {uni.showModal({ content: '输入为空，请正确输入', showCancel: false });} else {if (this.tabindex == 1) {//搜索猫猫
+          _api.default.indexCatSearch({ uid: 1, information: this.value }).then(function (res) {if (res.length == 0) {uni.showModal({ content: '没有搜到噢', showCancel: false });} else {_this2.list = res;_this2.searchstate = 1;}}).catch(function (err) {console.log(err);});
 
-      } else
+        } else
 
-      {
-        //搜索花花
-        _api.default.indexFlowerSearch({ uid: 1, information: this.value }).then(
-        function (res) {
-          if (res.length == 0)
-          {
-            uni.showModal({
-              content: '没有搜到噢',
-              showCancel: false });
+        {
+          //搜索花花
+          _api.default.indexFlowerSearch({ uid: 1, information: this.value }).then(
+          function (res) {
+            if (res.length == 0)
+            {
+              uni.showModal({
+                content: '没有搜到噢',
+                showCancel: false });
 
-          } else
+            } else
 
-          {
-            _this2.list = res;
-          }
-        }).catch(function (err) {
-          console.log(err);
-        });
+            {
+              _this2.list = res;
+              _this2.searchstate = 1;
+            }
+          }).catch(function (err) {
+            console.log(err);
+          });
+        }
       }
+
     },
     //导航切换
     changeselect: function changeselect(data) {
