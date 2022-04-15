@@ -28,4 +28,6 @@ public class Flower implements Serializable {
     private Picture picture;
     @Transient
     private String information;
+    @Transient
+    private List<Comment> commentList;
 }

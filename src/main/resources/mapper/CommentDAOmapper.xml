@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atlas.dao.CommentDAO">
+
+   <insert id="report" parameterType="Comment">
+        <if test="cid==null">
+           insert into comment(fid,content,uid,date) values (#{fid},#{content},#{uid},#{date})
+        </if>
+        <if test="fid==null">
+           insert into comment(cid,content,uid,date) values (#{cid},#{content},#{uid},#{date})
+        </if>
+   </insert>
+
+    <select id="find" parameterType="Comment" resultType="User">
+        select profile_photo,name from user where uid=#{uid}
+    </select>
+
+    <select id="findlist" parameterType="Comment" resultMap="Commentmap">
+        <if test="cid==null">
+            select c.*,u.* from comment c,user u where c.fid=#{fid} and c.uid=u.uid order by date desc
+        </if>
+        <if test="fid==null">
+            select c.*,u.profile_photo,u.name from comment c,user u where c.cid=#{cid} and c.uid=u.uid order by date desc
+        </if>
+    </select>
+
+    <resultMap id="Commentmap" type="com.atlas.entity.Comment">
+        <result property="content" column="content"></result>
+        <result property="date" column="date"></result>
+        <collection property="user" ofType="com.atlas.entity.User">
+            <result property="profile_photo" column="profile_photo"></result>
+            <result property="name" column="name"></result>
+        </collection>
+    </resultMap>
+</mapper>

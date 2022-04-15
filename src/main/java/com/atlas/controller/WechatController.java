@@ -1,7 +1,6 @@
 package com.atlas.controller;
 
 import com.atlas.entity.Cat;
-import com.atlas.entity.Codea;
 import com.atlas.entity.Flower;
 import com.atlas.entity.User;
 import com.atlas.service.Impl.CatServiceImpl;
@@ -9,15 +8,16 @@ import com.atlas.service.Impl.FlowerServiceImpl;
 import com.atlas.service.Impl.UserServiceImpl;
 import com.atlas.service.WechatService;
 import com.atlas.utils.JWTUtils;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.ListOperations;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import javax.security.auth.kerberos.KerberosTicket;
 
-import javax.annotation.Resource;
-import java.util.ArrayList;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,37 +40,32 @@ public class WechatController {
 
     @ResponseBody
     @PostMapping("/login")
-    public Map<String,String> getcode(@RequestBody Codea codea){
-        String code= codea.getCode();;
+    public Map<String,Object> getcode(@RequestBody User user){
+        String code= user.getCode();;
+        System.out.println(user);
         //System.out.println(code);
         String uid=wc.codetoopenid(code);
-        Map<String,String> map=new HashMap<>();
-        User user1=new User(uid,null);
-        User user=userService.find(user1);
-        //System.out.println(user1);
-        //System.out.println(user);
-        List<Cat> catList= catService.recommend();
-        List<Flower> flowerList= flowerService.recommend();
-        String key1="cat";
-        String key2="flower";
-        ListOperations<String,Cat> catListOperations= redisTemplate.opsForList();
-        ListOperations<String,Flower> flowerListOperations= redisTemplate.opsForList();
-        catListOperations.leftPushAll(key1,catList);
-        flowerListOperations.leftPushAll(key2,flowerList);
-
+        //System.out.println(uid);
+        Map<String,Object> map=new HashMap<>();
+        User user1=new User(uid,null,user.getProfile_photo(),user.getName(),null);
         try{
             if(uid==null){
-                map.put("msg","code has been used");
+               map.put("msg","code has been used");
             }else{
-                String token= JWTUtils.getToken(uid);
-                map.put("token",token);
-                user1.setToken(token);
-                System.out.println(user1);
-                if(user==null){
+                //String token= JWTUtils.getToken(uid);
+                //String token= DigestUtils.sha256Hex(uid);
+                //System.out.println(token);
+                //map.put("token",token);
+                //user1.setToken(token);
+                //System.out.println(user1);
+                User user2=userService.find(user1);
+                if(user2==null){
                     userService.insert(user1);
-                }else {
+                    map.put("user",user1);
+                }else{
                     userService.update(user1);
-                }
+                    map.put("user",user2);
+               }
             }
         }catch (Exception e){
             map.put("msg",e.getMessage());

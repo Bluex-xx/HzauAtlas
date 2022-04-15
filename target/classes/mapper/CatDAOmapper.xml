@@ -14,8 +14,34 @@
         <collection property="picture" select="findpicture" column="cid"></collection>
     </resultMap>
 
-    <select id="catdetail" parameterType="Picture" resultType="Cat">
-        select c.*,p.* from cat c,picture p where pid=#{pid} and p.cid=c.cid
+    <select id="catdetail" parameterType="Picture" resultMap="Catmap">
+        select c.* from cat c,picture p where pid=#{pid} and p.cid=c.cid
+    </select>
+
+    <resultMap id="Catmap" type="com.atlas.entity.Cat">
+        <result property="name" column="name"></result>
+        <result property="color" column="color"></result>
+        <result property="place" column="place"></result>
+        <result property="cid" column="cid"></result>
+        <result property="character" column="character"></result>
+        <collection property="pictureList" ofType="com.atlas.entity.Picture" select="catdetail2" column="cid">
+        </collection>
+        <collection property="commentList" ofType="com.atlas.entity.Comment" select="findcomment" column="cid">
+            <result property="profile_photo" column="profile_photo"></result>
+            <result property="name" column="name"></result>
+        </collection>
+    </resultMap>
+
+    <select id="catdetail2" resultType="Picture">
+        select * from picture where cid=#{cid}
+    </select>
+
+    <select id="finduser" resultType="User">
+        select u.profile_photo,u.name from user where uid=#{uid}
+    </select>
+
+    <select id="findcomment" resultType="Comment">
+        select u.*,c.* from comment c,user u where c.cid=#{cid} and u.uid=c.uid order by date desc
     </select>
 
     <select id="search" parameterType="Picture" resultType="Cat">
@@ -41,7 +67,7 @@
     </select>
 
     <select id="findcolor" resultMap="Catcolor">
-        select distinct color content,name from cat group by color
+        select distinct color,name from cat group by color
     </select>
 
     <resultMap id="Catcolor" type="com.atlas.entity.Cat">

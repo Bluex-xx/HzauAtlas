@@ -31,4 +31,6 @@ public class Cat implements Serializable {
     private List<Cat> catList;
     @Transient
     private Integer liked;
+    @Transient
+    private List<Comment> commentList;
 }

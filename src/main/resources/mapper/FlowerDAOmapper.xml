@@ -4,17 +4,40 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.atlas.dao.FlowerDAO">
     <select id="recommend" resultMap="Flowerr">
-        select fid,sum(liked) liked,name from picture where cid is null group by fid order by liked desc limit 10
+        select sum(liked) liked,name from picture where cid is null group by name order by liked desc limit 10
     </select>
 
     <resultMap id="Flowerr" type="com.atlas.entity.Flower">
         <id column="fid" property="fid"></id>
         <result column="name" property="name"></result>
-        <collection property="picture" select="findpicture" column="fid"></collection>
+        <collection property="picture" select="findpicture2" column="name"></collection>
     </resultMap>
 
-    <select id="flowerdetail" parameterType="Picture" resultType="Flower">
-        select f.*,p.* from flower f,picture p where p.pid=#{pid} and p.fid=f.fid
+    <select id="flowerdetail" parameterType="Picture" resultMap="Flowermap">
+        select f.* from flower f,picture p where p.pid=#{pid} and p.fid=f.fid
+    </select>
+
+    <resultMap id="Flowermap" type="com.atlas.entity.Flower">
+        <result property="florescence" column="florescence"></result>
+        <result property="name" column="name"></result>
+        <result property="fid" column="fid"></result>
+        <result property="color" column="color"></result>
+        <result property="department" column="department"></result>
+        <result property="allegory" column="allegory"></result>
+        <collection property="pictureList" ofType="com.atlas.entity.Picture" select="flowerdetail2" column="fid">
+        </collection>
+        <collection property="commentList" ofType="com.atlas.entity.Comment" select="findcomment" column="fid">
+            <result property="profile_photo" column="profile_photo"></result>
+            <result property="name" column="name"></result>
+        </collection>
+    </resultMap>
+
+    <select id="findcomment" resultType="Comment">
+        select u.*,c.* from comment c,user u where c.fid=#{fid} and u.uid=c.uid order by date desc
+    </select>
+
+    <select id="flowerdetail2"  resultType="Picture">
+        select * from picture where fid=#{fid}
     </select>
 
     <select id="search" parameterType="Picture" resultType="Flower">
@@ -22,6 +45,7 @@
                              or florescence like concat('%',#{information},'%')
                              or department like concat('%',#{information},'%')
                              or allegory like concat('%',#{information},'%')
+                             or color like concat('%',#{information},'%')
     </select>
 
     <resultMap id="florescence" type="com.atlas.entity.Flower">
@@ -32,7 +56,7 @@
         <result property="color" column="color"></result>
         <result property="department" column="department"></result>
         <result property="allegory" column="allegory"></result>
-        <collection property="picture" select="findpicture" column="fid"></collection>
+        <collection property="picture" select="findpicture2" column="name"></collection>
     </resultMap>
 
     <resultMap id="variety" type="com.atlas.entity.Flower">
@@ -43,7 +67,7 @@
         <result property="color" column="color"></result>
         <result property="department" column="department"></result>
         <result property="allegory" column="allegory"></result>
-        <collection property="picture" select="findpicture" column="fid"></collection>
+        <collection property="picture" select="findpicture2" column="name"></collection>
     </resultMap>
 
     <resultMap id="color" type="com.atlas.entity.Flower">
@@ -61,12 +85,13 @@
         select * from picture where fid=#{fid} order by rand() limit 1
     </select>
 
+
     <select id="classifyflorescence" parameterType="Flower" resultMap="florescence">
-        select f.*  from flower f where florescence=#{florescence}
+        select f.*  from flower f where florescence=#{florescence} group by name
     </select>
 
     <select id="classifyvariety" parameterType="Flower" resultMap="variety">
-        select f.*  from flower f where department=#{department}
+        select f.*  from flower f where department=#{department} group by name
     </select>
 
     <select id="classifycolor" parameterType="Flower" resultMap="color">

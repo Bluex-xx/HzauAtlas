@@ -1,10 +1,9 @@
 package com.atlas.controller;
 
 import cn.hutool.core.util.BooleanUtil;
-import com.atlas.entity.Cat;
+import com.atlas.config.LimitRequest;
 import com.atlas.entity.Flower;
 import com.atlas.entity.Picture;
-import com.atlas.service.FlowerService;
 import com.atlas.service.Impl.FlowerServiceImpl;
 import com.atlas.service.Impl.PictureServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,17 +35,17 @@ public class FlowerController {
     @PostMapping("/flowerdetail")
     Flower flowerdetail(@RequestBody Picture picture){
         Flower flower=flowerService.flowerdetail(picture);
-        List<Picture> pictureList= pictureService.flowerdetail(flower.getFid());
+        List<Picture> pictureList= flower.getPictureList();
         String key="picture:"+picture.getUid();
         pictureList.forEach(picture1 -> {
             Boolean isMember=stringRedisTemplate.opsForSet().isMember(key,picture1.getPid().toString());
             picture1.setIslike(BooleanUtil.isTrue(isMember));
         });
-        flower.setPictureList(pictureList);
         return flower;
     }
 
     //搜索界面
+    @LimitRequest(time = 600000,count = 5)
     @ResponseBody
     @PostMapping("/search")
     public List<Picture> search(@RequestBody Picture picture){

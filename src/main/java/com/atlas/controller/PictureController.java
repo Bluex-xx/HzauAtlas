@@ -70,7 +70,7 @@ public class PictureController {
         return isMember;
     }
 
-    @Scheduled(fixedDelay = 60000)
+    @Scheduled(fixedDelay = 300000)
     public void updaterecommend(){
         List<Cat> catList= catService.recommend();
         List<Flower> flowerList= flowerService.recommend();

@@ -6,16 +6,20 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.Transient;
+import java.util.Date;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class User {
+public class Comment {
+    private Integer fid;
+    private Integer cid;
     private String uid;
-    private String token;
+    private String content;
+    private String date;
     private String profile_photo;
     private String name;
     @Transient
-    private String code;
+    private User user;
 }

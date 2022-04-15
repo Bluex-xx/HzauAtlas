@@ -13,7 +13,6 @@ public class InterceptorConfig implements WebMvcConfigurer {
         List<String> patterns=new ArrayList<>();
         patterns.add("/csi");
         registry.addInterceptor(new JWTInterceptor())
-                .addPathPatterns("/**")
-                .excludePathPatterns(patterns);
+                .excludePathPatterns("/**");
     }
 }

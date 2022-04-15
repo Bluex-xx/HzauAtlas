@@ -1,6 +1,7 @@
 package com.atlas.controller;
 
 import cn.hutool.core.util.BooleanUtil;
+import com.atlas.config.LimitRequest;
 import com.atlas.entity.Cat;
 import com.atlas.entity.Picture;
 import com.atlas.service.Impl.CatServiceImpl;
@@ -51,17 +52,17 @@ public class CatController {
     @PostMapping("/catdetail")
     Cat catdetail(@RequestBody Picture picture){
         Cat cat=catService.catdetail(picture);
-        List<Picture> pictureList= pictureService.catdetail(cat.getCid());
+        List<Picture> pictureList= cat.getPictureList();
         String key="picture:"+picture.getUid();
         pictureList.forEach(picture1 -> {
             Boolean isMember=stringRedisTemplate.opsForSet().isMember(key,picture1.getPid().toString());
             picture1.setIslike(BooleanUtil.isTrue(isMember));
         });
-        cat.setPictureList(pictureList);
         return cat;
     }
 
     //搜索界面
+    @LimitRequest(time = 600000,count = 5)
     @ResponseBody
     @PostMapping("/search")
     public List<Picture> search(@RequestBody Picture picture){
