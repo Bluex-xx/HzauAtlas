@@ -13,6 +13,7 @@ import java.util.Date;
 @NoArgsConstructor
 @ToString
 public class Comment {
+    private Integer id;
     private Integer fid;
     private Integer cid;
     private String uid;

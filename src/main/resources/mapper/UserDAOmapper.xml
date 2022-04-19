@@ -4,14 +4,14 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.atlas.dao.UserDAO">
     <select id="find" resultType="User">
-        select user.profile_photo,user.name from user where uid=#{uid};
+        select user.profile_photo,user.name from user where openid=#{openid};
     </select>
 
     <update id="update" parameterType="User">
-        update user set profile_photowhere=#{profile_photo},name=#{name} where uid=#{uid};
+        update user set profile_photo=#{profile_photo},name=#{name} where openid=#{openid};
     </update>
 
     <insert id="insert" parameterType="User">
-        insert into user values (#{uid},#{token},#{profile_photo},#{name})
+        insert into user(openid,profile_photo,name) values (#{openid},#{profile_photo},#{name})
     </insert>
 </mapper>

@@ -28,4 +28,14 @@ public class CommentServiceImpl implements CommentService {
     public List<Comment> findlist(Comment comment) {
         return commentDAO.findlist(comment);
     }
+
+    @Override
+    public int delete(Comment comment) {
+        return commentDAO.delete(comment);
+    }
+
+    @Override
+    public int delete2(Comment comment) {
+        return commentDAO.delete2(comment);
+    }
 }

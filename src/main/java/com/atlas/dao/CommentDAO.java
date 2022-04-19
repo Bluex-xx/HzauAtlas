@@ -11,4 +11,6 @@ public interface CommentDAO {
     void report(Comment comment);
     User find(Comment comment);
     List<Comment> findlist(Comment comment);
+    int delete(Comment comment);
+    int delete2(Comment comment);
 }

@@ -62,7 +62,7 @@ public class CatController {
     }
 
     //搜索界面
-    @LimitRequest(time = 600000,count = 5)
+    @LimitRequest(time = 60000,count = 5)
     @ResponseBody
     @PostMapping("/search")
     public List<Picture> search(@RequestBody Picture picture){

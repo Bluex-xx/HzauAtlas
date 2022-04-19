@@ -80,8 +80,8 @@ public class PictureController {
         redisTemplate.delete(key2);
         ListOperations<String,Cat> catListOperations= redisTemplate.opsForList();
         ListOperations<String,Flower> flowerListOperations= redisTemplate.opsForList();
-        catListOperations.leftPushAll(key1,catList);
-        flowerListOperations.leftPushAll(key2,flowerList);
+        catListOperations.rightPushAll(key1,catList);
+        flowerListOperations.rightPushAll(key2,flowerList);
         System.out.println(new Date());
     }
 

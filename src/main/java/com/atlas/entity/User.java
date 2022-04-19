@@ -12,10 +12,10 @@ import javax.persistence.Transient;
 @NoArgsConstructor
 @ToString
 public class User {
-    private String uid;
-    private String token;
+    private String openid;
     private String profile_photo;
     private String name;
+    private Integer uid;
     @Transient
     private String code;
 }

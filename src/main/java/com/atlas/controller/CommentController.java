@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -34,6 +35,22 @@ public class CommentController {
         User user=commentService.find(comment);
         commentService.report(comment);
         return commentService.findlist(comment);
+    }
+
+    @ResponseBody
+    @PostMapping("/delete")
+    public int delete(@RequestBody Comment comment){
+        List<String> stringList=new ArrayList<>();
+        stringList.add("ojCNE5EjDKNmHIHcqFA6XlZlqbtw");
+        stringList.add("ojCNE5FeIUwJA6NGXXhIbbw6w6Js");
+        stringList.add("ojCNE5DMzUQRB33ATwaWisklwKcI");
+        if(stringList.contains(comment.getUid())){
+            return commentService.delete2(comment);
+        }else{
+            int row=commentService.delete(comment);
+            System.out.println(row);
+            return row;
+        }
     }
 
 }

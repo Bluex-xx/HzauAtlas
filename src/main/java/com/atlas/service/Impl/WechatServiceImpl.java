@@ -42,16 +42,16 @@ public class WechatServiceImpl implements WechatService {
                 .body();;
         System.out.println("Response was: " + response);
         int begin = response.indexOf("openid");
-        String uid = null;
+        String openid = null;
         if (begin == -1) {
-            return uid;
+            return openid;
         } else {
-            uid = response.substring(begin + 9, response.length() - 2);
-            System.out.println("uid"+uid);
+            openid = response.substring(begin + 9, response.length() - 2);
+            //System.out.println("openid"+openid);
         }
         //JSONObject obj = JSON.parseObject(response);//将json字符串转换为json对
         //System.out.println(obj);
-        return uid;
+        return openid;
     }
 }
 

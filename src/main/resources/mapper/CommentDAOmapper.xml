@@ -29,9 +29,18 @@
     <resultMap id="Commentmap" type="com.atlas.entity.Comment">
         <result property="content" column="content"></result>
         <result property="date" column="date"></result>
+        <result property="id" column="id"></result>
         <collection property="user" ofType="com.atlas.entity.User">
             <result property="profile_photo" column="profile_photo"></result>
             <result property="name" column="name"></result>
         </collection>
     </resultMap>
+
+    <delete id="delete" parameterType="Comment">
+        delete from comment where uid=#{uid} and id=#{id}
+    </delete>
+
+    <delete id="delete2" parameterType="Comment">
+        delete from comment where id=#{id}
+    </delete>
 </mapper>

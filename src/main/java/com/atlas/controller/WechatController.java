@@ -44,12 +44,12 @@ public class WechatController {
         String code= user.getCode();;
         System.out.println(user);
         //System.out.println(code);
-        String uid=wc.codetoopenid(code);
+        String openid=wc.codetoopenid(code);
         //System.out.println(uid);
         Map<String,Object> map=new HashMap<>();
-        User user1=new User(uid,null,user.getProfile_photo(),user.getName(),null);
+        User user1=new User(openid,user.getProfile_photo(),user.getName(),null,null);
         try{
-            if(uid==null){
+            if(openid==null){
                map.put("msg","code has been used");
             }else{
                 //String token= JWTUtils.getToken(uid);
@@ -60,11 +60,13 @@ public class WechatController {
                 //System.out.println(user1);
                 User user2=userService.find(user1);
                 if(user2==null){
-                    userService.insert(user1);
+                    int uid=userService.insert(user1);
+                    user1.setUid(uid);
                     map.put("user",user1);
                 }else{
                     userService.update(user1);
-                    map.put("user",user2);
+                    user1.setUid(user2.getUid());
+                    map.put("user",user1);
                }
             }
         }catch (Exception e){
