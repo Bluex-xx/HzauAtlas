@@ -8,10 +8,10 @@
 		 	   {{tip}}
 		 </view>
 		 <view class="search">
-		 	<input v-model:value="value" placeholder="Search cute" placeholder-style="color:rgba(158, 158, 158, 0.46);font-weight:500;">
+		 	<input v-model:value="value" placeholder="Search Some" placeholder-style="color:rgba(158, 158, 158, 0.46);font-weight:500;">
 		 </view>
 		 </input>
-         <image @click="search()" src="../../static/search-button.png" class="search-button"></image>
+         <image @click="throttleSearch" src="../../static/search-button.png" class="search-button"></image>
 		 <image v-show="tabindex==1" src="../../static/cat-icon.png" class="cat-bg"></image>
 		 <image v-show="tabindex==2" src="../../static/flower-icon-banner.png" class="cat-bg"></image>
 		 <view class="tabs">
@@ -33,20 +33,23 @@
 		 </view>
 	 </view>
 	 <view class="cat_list">
-	 	<view v-if="searchstate==0" v-for="(i,index) in list" class="cat_one" :key="index">
+		 <view v-show="loading" class="loading">
+             <image src="../../static/loading.gif" class="loading-img"></image>
+		 </view>
+	 	<view v-if="searchstate==0&&!loading" v-for="(i,index) in list" class="cat_one" :key="index">
 			<u--image @click="todetail(i.picture.pid,tabindex)" :src="i.picture.store" class="cat_one_image" mode="aspectFill" :lazy-load="true" width="309.6rpx" height="400rpx">
 			  <template v-slot:loading>
 			    <u-loading-icon mode="circle" color="red"></u-loading-icon>
 			  </template>
 			</u--image>		
 			<view class="cat_name">
-				{{i.picture.name}}
+				{{i.name}}
 			</view>
 			<image @click="islike(i.picture.pid,index)" v-show="!i.picture.islike" src="../../static/heart-icon.png"  class="love"></image>
 			<image @click="islike(i.picture.pid,index)" v-show="i.picture.islike" src="../../static/heart-icon-selected.png"  class="love"></image>
 	 	</view>
-		<view v-if="searchstate==1" v-for="(i,index) in list" class="cat_one" :key="index">
-			        <u--image  @click="todetail(i.pid,tabindex)" :src="i.store" class="cat_one_image" mode="aspectFill" :lazy-load="true" width="309.6rpx" height="400rpx" lazyload="true">
+		<view v-if="searchstate==1&&!loading" v-for="(i,index) in list" class="cat_one" :key="index">
+			        <u--image  @click="todetail(i.pid,tabindex)" :src="i.store" class="cat_one_image" mode="aspectFill" :lazy-load="true" width="309.6rpx" height="400rpx" >
 			          <template v-slot:loading>
 			            <u-loading-icon mode="circle" color="red"></u-loading-icon>
 			          </template>
@@ -57,12 +60,27 @@
 					<image @click="islike(i.pid,index)" v-show="!i.islike" src="../../static/heart-icon.png"  class="love"></image>
 					<image @click="islike(i.pid,index)" v-show="i.islike" src="../../static/heart-icon-selected.png"  class="love"></image>
 			</view>
-	 </view>
-
-	 </view>
+			<view class="" style="width: inherit;">
+				<u-loadmore
+					:status="status" 
+					:loading-text="loadingText" 
+					:loadmore-text="loadmoreText" 
+					:nomore-text="nomoreText" 
+					marginTop="25"
+					loadingIcon="semicircle"
+					color="#b7b7b7"
+				/>
+			</view>
+			
+	</view>
+	
+	<image class="scroll_to_top" @click="scrollToTop" src="../../static/scroll_to_top.png" mode="aspectFit"></image>
+	
+	</view>
 	</view>
 </template>
 <script>
+	import { throttle } from '@/util/throttle.js'
 	import api from '@/api/api.js'
 	export default {
 		data() {
@@ -74,16 +92,52 @@
 				tab_2:"花花",
 				tabindex:1,
 				searchstate:0,
-				list:{
+				listAll:[],
+				list:[{
 					picture:""
-				}
+				}],
+				cacheList:{
+					picture:""
+				},
+				loading:true,
+				status: '',
+				loadingText: '努力加载中',
+				loadmoreText: '动动手指上拉一下',
+				nomoreText: '—— 就到这里喽 ——',
+				// page: 1,
+				listNum:8,
+				uid:1,
+				post_state:false
 			}
+		},
+		onReachBottom() {
+			this.status = ''
+			let addNum = 8
+			if(this.listNum >= this.listAll.length) return;
+			this.status = 'loading';
+			setTimeout(() => {
+				for(let i=0; i<addNum; i++) {
+					this.list.push(this.listAll[this.listNum+i])
+					if(addNum > this.listAll.length-this.listNum) {
+						addNum = this.listAll.length-this.listNum
+					}
+				}
+				this.listNum += addNum;
+				if(this.listNum >= this.listAll.length) 
+				{
+					this.status = 'nomore';
+				}
+				else 
+				{
+					this.status = 'loading';
+				}
+			}, 1000)
 		},
 		methods: {
             //跳转详情页
-            todetail(data){
+            todetail(data,tabindex){
 				uni.navigateTo({	
-					url: "../../packageA/pages/detail/detail?data="+data
+					url: `../../packageA/pages/detail/detail?data=${data}&tabindex=${tabindex}`
 				})
 			},
 			toscience(){
@@ -91,100 +145,209 @@
 					url: '../../packageA/pages/science/science'
 				})
 			},
-			//获取首页数据
-			getList()
-			{
-				api.indexRecommand({uid:1,type:this.tabindex}).then(
-				res => {
-						this.list = res
-						}).catch(err => {
-							console.log(err)
-						})
+			scrollToTop() {
+				uni.pageScrollTo({
+					scrollTop: 0,
+					duration: 300
+				});
 			},
+			//获取首页推荐数据
+			getList(){
+				this.listNum = 8;
+				this.cacheList = [];
+				this.loading=true;
+				this.post_state=true;
+				api.indexRecommand({status:'2',uid:this.uid,type:this.tabindex}).then(
+				res => {
+					    this.list=[];
+					    this.listAll=[]
+						this.listAll = res;
+						this.post_state=false;
+						if(res.length<this.listNum) {
+							for(let i=0; i<res.length; i++) {
+								this.list.push(res[i])	
+							}
+						}
+						else {
+							for(let i=0; i<this.listNum; i++) {
+								this.list.push(res[i])	
+							}
+						}
+						this.loading=false;
+					})
+			},
+			//首页搜索接口
 			search(){
+				this.post_state=true;
+				this.status = ''
 				if(this.value=="")
 				{
 					uni.showModal({
 						content: '输入为空，请正确输入',
 						showCancel: false
 					});
+					// this.post_state=false;
+				}
+				else if(this.value.length>20)
+				{
+					uni.showModal({
+						content: '输入语句过长',
+						showCancel: false
+					});
 				}
 				else
 				{
+					this.list=[];
+					this.loading=true;
 					if(this.tabindex==1)
 					{
 						//搜索猫猫
-						api.indexCatSearch({uid:1,information:this.value}).then(
+						api.indexCatSearch({uid:this.uid,information:this.value}).then(
 						res => {
+							        this.value='';
 									if(res.length==0)
 									{
 										uni.showModal({
 											content: '没有搜到噢',
 											showCancel: false
 										});
+										this.getList();
+									}
+									else if(res.status==500)
+									{
+										uni.showModal({
+											content: '搜索过于频繁，请一分钟后再试',
+											showCancel: false
+										});
+										this.list = this.cacheList;
+										this.loading = false;
 									}
 									else
 									{
-										this.list = res;
+										this.listAll = res;
+										if(res.length<this.listNum) {
+											for(let i=0; i<res.length; i++) {
+												this.list.push(res[i])	
+											}
+										}
+										else {
+											for(let i=0; i<this.listNum; i++) {
+												this.list.push(res[i])	
+											}
+										}
 										this.searchstate=1;
+										this.loading=false;
+										// this.post_state=false;
 									}
-								 }).catch(err => {
-								 	console.log(err)
-								 })  
-						
+								 })		
 					}
 					else
 					{
 						//搜索花花
-						api.indexFlowerSearch({uid:1,information:this.value}).then(
+						api.indexFlowerSearch({uid:this.uid,information:this.value}).then(
 						res => {
+							        this.value='';
 									if(res.length==0)
 									{
 										uni.showModal({
 											content: '没有搜到噢',
 											showCancel: false
 										});
+										this.getList();
+									}
+									else if(res.status==500)
+									{
+										uni.showModal({
+											content: '搜索过于频繁，请一分钟后再试',
+											showCancel: false
+										});
+										this.list = this.cacheList;
+										this.loading = false;
 									}
 									else
 									{
-										this.list = res;
+										this.listAll = res;
+										if(res.length<this.listNum) {
+											for(let i=0; i<res.length; i++) {
+												this.list.push(res[i])	
+											}
+										}
+										else {
+											for(let i=0; i<this.listNum; i++) {
+												this.list.push(res[i])	
+											}
+										}
 										this.searchstate=1;
+										this.loading=false;
+										// this.post_state=false;
 									}
-								}).catch(err => {
-									console.log(err)
 								})
+							
 					}
+					this.post_state=false;
 				}
+				this.post_state=false;
 				
 			},
+			throttleSearch:throttle(function() {
+				if(!this.post_state) this.search()
+			}),
 			//导航切换
 			changeselect(data){
-			 	this.tabindex=data;
-				this.searchstate=0;
-				this.getList(data);
-				uni.setStorageSync('tabindex', this.tabindex);
+				if(!this.post_state)
+				{
+					if(this.tabindex!=data)
+					{
+						this.tabindex=data;
+						this.searchstate=0;
+						this.getList(data);
+					}
+					else if(this.searchstate==1)
+					{
+						this.tabindex=data;
+						this.searchstate=0;
+						this.getList(data);
+					}
+				}
 			},
 			//照片点赞
-			islike(data,id){
-				api.picLike({uid:1,pid:data}).then(
-				res => {
-						if(res=="操作成功")
-						{
-							if(this.searchstate==0)
+			async islike(data,id){
+				if(this.uid=="1")
+				{
+                    await uni.showModal({
+                       	content: '请先登录',
+                       	showCancel: false
+                       });			
+				    uni.switchTab({
+						url: '../../pages/mine/mine'
+					});
+				}
+				else
+				{
+					api.picLike({uid:this.uid,pid:data}).then(
+					res => {
+							if(res=="操作成功")
 							{
-								this.list[id].picture.islike=!this.list[id].picture.islike;
+								if(this.searchstate==0)
+								{
+									this.list[id].picture.islike=!this.list[id].picture.islike;
+								}
+					            else
+								{
+									this.list[id].islike=!this.list[id].islike;
+								}
 							}
-                            else
-							{
-								this.list[id].islike=!this.list[id].islike;
-							}
-						}
-						}).catch(err => {
-							console.log(err)
-						})
+							}).catch(err => {
+								console.log(err)
+							})
+				}
 			}
 		},
+		onShow(){
+		      this.uid=uni.getStorageSync('uid')  ? uni.getStorageSync('uid') : '1';	
+		},
 		 mounted(){
+			  this.uid=uni.getStorageSync('uid') ? uni.getStorageSync('uid') : "1";
               this.getList();
 			  this.changeselect(1);
 		 }
@@ -292,13 +455,13 @@
 		position: absolute;
 		width: 55rpx;
 		height: 55rpx;
-		left:0;
+		left:12rpx;
 	}
     /* 	tabtitle_1 */
 	.tabtitle-1
 	{
 		position: absolute;
-		left: 60rpx;
+		left: 74rpx;
 		top:5rpx;
 		color: grey;
 	}
@@ -321,7 +484,7 @@
 		position: absolute;
 		width:138rpx;
 		height:2rpx;
-		left: 1rpx;
+		left: 13rpx;
 		bottom: 0;
 		background: #FAACA8;
 	}
@@ -384,5 +547,31 @@
 		left: 223rpx;
 		width: 60rpx;
 		height: 60rpx;
+	}
+	.loading
+	{
+		position: absolute;
+		width: 620rpx;
+		left: 0rpx;
+		top:30rpx;
+		padding: 80rpx 30rpx 100rpx 30rpx;
+		background-color: #FFFFFF;
+		border-radius: 20rpx;
+		z-index: 999;
+	}
+	.loading-img
+	{
+		width: 166rpx;
+		height: 166rpx;
+		margin: 10rpx 0rpx 0 228rpx;
+	}
+	.scroll_to_top {
+		position: fixed;
+		bottom: 30rpx;
+		right: 30rpx;
+		width: 100rpx;
+		height: 100rpx;
+		border-radius: 50rpx;
+		background-color: rgba(212, 212, 212, 0.6);
 	}
 </style>

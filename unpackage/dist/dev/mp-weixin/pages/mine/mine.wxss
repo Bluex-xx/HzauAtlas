@@ -8,7 +8,6 @@
 	border-radius: 0px 0px 24px 24px;
 	-webkit-filter: blur(2px);
 	        filter: blur(2px);
-	/* box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.3); */
 }
 .header_avatar {
 	position: absolute;
@@ -37,6 +36,13 @@
 	color: #1E1D1D;
 	mix-blend-mode: multiply;
 }
+.header button {
+	color: grey;
+	background:rgba(0, 0, 0, 0);
+}
+button::after{
+	border: none;
+}
 .content_title {
 	background-color: #FFFFFF;
 	position: absolute;
@@ -46,25 +52,25 @@
 	line-height: 104rpx;
 	border-radius: 20rpx;
 	box-shadow: 0rpx 10rpx 10rpx rgba(213, 213, 213, 0.6);
-	font-size: 46rpx;
+	font-size: 42rpx;
 	color: #9E9E9E;
 	text-align: center;
 }
 .like_icon {
 	position: absolute;
-	left: 240rpx;
+	left: 230rpx;
 	top: 30rpx;
 	width: 46rpx;
 	height: 46rpx;
 }
 .content_category {
-	position: relative;
-	left: 34rpx;
-	top: 720rpx;
-	width: 680rpx;
-	/* height: 700rpx; */
-	border-radius: 10px;
-	background: #FFFFFF;
+    position: relative;
+    left: 45rpx;
+    top: 730rpx;
+    width: 659rpx;
+    min-height: 46vh;
+    border-radius: 10px;
+    background: #FFFFFF;
 }
 .tabs
 	{
@@ -109,16 +115,101 @@
 }
 .main_photo
 	{
+		padding:60rpx 35rpx 50rpx 40rpx;
+}
+.photo_list
+	{
 		display: flex;
 		flex-wrap: wrap;
-		padding:60rpx 45rpx 50rpx 45rpx;
 }
 .photo_one
 	{
-		width: 183rpx;
-		height: 183rpx;
+		width: 180rpx;
+		height: 180rpx;
 		margin: 6rpx;
 		box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.4);
 }
-	
+.button_block
+	{
+		width: 310rpx;
+		height: 310rpx;
+		position: absolute;
+		left: 45rpx;
+		top:750rpx;
+		border-radius: 20rpx;
+		background: #FFFFFF;
+}
+.buttons button
+	{
+		border: none;
+		padding: 0;
+		margin: 0;
+}
+button .button_block_title:last-child
+	{
+		margin-top: -41rpx;
+		margin-left: -5rpx;
+}
+.button_block_icon
+	{       
+        width: 130rpx;
+        height: 130rpx;
+        margin: 60rpx 80rpx 17rpx 95rpx;
+}
+.button_block_title
+	{
+		font-size: 35rpx;
+		color: grey;
+		margin-left: 123rpx;
+		font-weight: 500;
+}
+.button_block:last-child view
+	{
+		margin-left: 90rpx;
+}
+.about
+	{
+		width: 760rpx;
+		height: 1190rpx;
+		margin-top: 10rpx;
+}
+.contribution
+	{
+		width: 760rpx;
+		height: 1130rpx;
+		margin-top: 10rpx;
+}
+.delete_icon
+	{
+	    width: 60rpx;
+	    height: 60rpx;
+        margin-left: 50rpx;
+		margin-top: 100rpx;
+}
+.loading
+	{
+		position: absolute;
+		width: 600rpx;
+		left: 0rpx;
+		top: 200rpx;
+		padding: 80rpx 30rpx 100rpx 30rpx;
+		background-color: #FFFFFF;
+		border-radius: 20rpx;
+}
+.loading-img
+	{
+		width: 166rpx;
+		height: 166rpx;
+		margin: 10rpx 0rpx 0 228rpx;
+}
+.scroll_to_top {
+		position: fixed;
+		bottom: 30rpx;
+		right: 30rpx;
+		width: 100rpx;
+		height: 100rpx;
+		border-radius: 50rpx;
+		background-color: rgba(212, 212, 212, 0.6);
+}
+
 

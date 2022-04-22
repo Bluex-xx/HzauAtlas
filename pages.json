@@ -8,7 +8,7 @@
 			"style": {
 				"navigationStyle":"custom",             //去掉顶部
 				// "navigationBarTitleText": "uni-app", //顶部标题
-				"enablePullDownRefresh": true,
+				"enablePullDownRefresh": false,
 				"onReachBottomDistance": 100
 			}
 		}

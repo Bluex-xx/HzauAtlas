@@ -49,6 +49,14 @@ const api = {
 	},
 	
 	//花花分类
+	// 按花色分类
+	flowerColorCategory() {
+		return minRequest('flower/findcolor', '', 'POST')
+	},
+	flowerSortColor(data) {
+		return minRequest('flower/classifycolor', data, 'POST')
+	},
+	
 	//按花期分类
 	flowerStateCategory() {
 		return minRequest('flower/findflorescence', '', 'POST')
@@ -69,19 +77,14 @@ const api = {
 	//返回用户喜欢的猫与花
 	userLikePic(data){
 		return minRequest('picture/user', data, 'POST')
+	},
+	comment(data){
+		return minRequest('comment/report',data,'POST')
+	},
+	commentDelete(data){
+		return minRequest('comment/delete',data,'POST')
 	}
   }
 // }
 
-// export const catSort = () => minRequest('cat/classifycolor', 'POST');
 export default api
-
-// 接口使用方法
-// Request () {
-// 		this.$minApi.indexRecommand({data}).then(res => {
-// 			this.res = res
-// 			console.log(res)
-// 		}).catch(err => {
-// 			console.log(err)
-// 		})
-// 	}

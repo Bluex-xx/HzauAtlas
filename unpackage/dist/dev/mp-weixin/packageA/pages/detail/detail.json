@@ -3,7 +3,13 @@
   "navigationBarTitleText": "",
   "enablePullDownRefresh": false,
   "usingComponents": {
+    "u-swiper": "/node-modules/uview-ui/components/u-swiper/u-swiper",
+    "u-skeleton": "/node-modules/uview-ui/components/u-skeleton/u-skeleton",
     "u--image": "/node-modules/uview-ui/components/u--image/u--image",
-    "u-loading-icon": "/node-modules/uview-ui/components/u-loading-icon/u-loading-icon"
+    "u-loading-icon": "/node-modules/uview-ui/components/u-loading-icon/u-loading-icon",
+    "u-icon": "/node-modules/uview-ui/components/u-icon/u-icon",
+    "u-popup": "/node-modules/uview-ui/components/u-popup/u-popup",
+    "u--input": "/node-modules/uview-ui/components/u--input/u--input",
+    "u-empty": "/node-modules/uview-ui/components/u-empty/u-empty"
   }
 }

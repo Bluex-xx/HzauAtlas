@@ -2,5 +2,10 @@
   "navigationStyle": "custom",
   "navigationBarTitleText": "",
   "enablePullDownRefresh": false,
-  "usingComponents": {}
+  "usingComponents": {
+    "u--image": "/node-modules/uview-ui/components/u--image/u--image",
+    "u-loading-icon": "/node-modules/uview-ui/components/u-loading-icon/u-loading-icon",
+    "u-empty": "/node-modules/uview-ui/components/u-empty/u-empty",
+    "u-popup": "/node-modules/uview-ui/components/u-popup/u-popup"
+  }
 }

@@ -42,17 +42,17 @@
         },
         {
           "name": "",
-          "pathName": "pages/list/list",
+          "pathName": "packageA/pages/list/list",
           "query": "",
-          "launchMode": "default",
-          "scene": null
+          "scene": null,
+          "launchMode": "default"
         },
         {
           "name": "",
           "pathName": "packageA/pages/detail/detail",
           "query": "",
-          "scene": null,
-          "launchMode": "default"
+          "launchMode": "default",
+          "scene": null
         }
       ]
     }

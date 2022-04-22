@@ -1,34 +1,34 @@
 <template>
 	<view>
 		<view class="header">
-			<image @click="backToLast" src="../../../static/back-icon.png" class="back"></image>
-			
-			<image class="header_img" src="https://somecute.cn/img/static/flower_header.jpg" mode="aspectFill"></image>
+			<image class="header_img" :src="categoryList[0].picture.store" mode="aspectFill"></image>
 		</view>
-		
+		<image @click="backToLast" src="../../../static/back-icon.png" class="back"></image>
 		<view class="content">
 			<view class="content_title">
 				{{ categoryTitle }}
 				<view class="content_title_line">
 				</view>
 			</view>
-			
 			<scroll-view class="content_main" scroll-x="true">
 				<view class="content_main_item" v-for="item in categoryList" :key="item">
+					
 					<view class="content_item_imgbox">
-					    <u--image class="content_item_img" :src="item.picture.store" mode="aspectFill"  @click="previewImg(item.picture.store)" width="471rpx" height="577rpx">
+					    <u--image class="content_item_img" :src="item.picture.store" mode="aspectFill" @click="previewImg(item.picture.store)" width="471rpx" height="577rpx">
 					      <template v-slot:loading>
 					        <u-loading-icon color="red"></u-loading-icon>
 					      </template>
 					    </u--image>
 					</view>
-					<view class="content_item_line">
-						<view class="content_item_name">
-							{{ item.name }}
+					<view class="content_sub" @click="toDetail(item)">
+						<view class="content_item_line">
+							<view class="content_item_name">
+								{{ item.name }}
+							</view>
 						</view>
+						
+						<image class="content_item_more"src="../../../static/more.png" mode="aspectFit"></image>
 					</view>
-					
-					<image class="content_item_more"src="../../../static/more.png" mode="aspectFit" @click="toDetail(item)"></image>
 				</view>
 				
 			</scroll-view>
@@ -45,11 +45,11 @@
 				old: {
 				    scrollTop: 0
 				},
-				categoryTitle: '纯色',
+				categoryTitle: 'loading...',
 				categoryList: [
 					{
 						cid: '1',
-						name: '名称1',
+						name: 'Loading...',
 						picture: {
 							pid: '1',
 							store: 'https://somecute.cn/img/static/flower_list.jpg'
@@ -68,9 +68,15 @@
 				}
 			}
 			else {
-				uni.setStorageSync('categoryindex', 2)
+				uni.setStorageSync('categoryindex', 2) 
 				
-				if(uni.getStorageSync('categoryitem') == '花期') {
+				if(uni.getStorageSync('categoryitem') == '花色') {
+					api.flowerSortColor({color: option.data}).then(res => {
+						this.categoryTitle = option.data
+						this.categoryList = res
+					})
+				}
+				else if(uni.getStorageSync('categoryitem') == '花期') {
 					api.flowerSortState({florescence: option.data}).then(res => {
 						this.categoryTitle = option.data
 						this.categoryList = res
@@ -105,12 +111,12 @@
 				})
 			},
 			previewImg(data){
-			uni.previewImage({
-				// 当前需要预览的图片
-				current:data,
-				// //所有图片
-				urls:[data]
-			});			
+				uni.previewImage({
+					// 当前需要预览的图片
+					current:data,
+					// //所有图片
+					urls:[data]
+				});			
 			}
 		}
 	}
@@ -122,8 +128,8 @@
 	left: 0rpx;
 	top: 0rpx;
 	width: 750rpx;
-	height: 450rpx;
-	/* filter: blur(5px); */
+	height: 500rpx;
+	filter: blur(10rpx);
 }
 
 .back {
@@ -157,7 +163,7 @@
 .content_title {
 	position: absolute;
 	left: 175rpx;
-	top: -28rpx;
+	top: -57rpx;
 	width: 400rpx;
 	line-height: 142rpx;
 	border-radius: 19rpx;
@@ -217,6 +223,12 @@
 .content_item_img {
 	width: 100%;
 	height: 100%;
+}
+
+.content_sub {
+	width: inherit;
+	height: 160rpx;
+	margin-top: 620rpx;
 }
 
 .content_item_name {
