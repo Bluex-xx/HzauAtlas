@@ -11,18 +11,12 @@
         update picture set liked=liked-1 where pid=#{pid}
     </update>
 
-    <select id="recommendcat" parameterType="java.util.List" resultType="java.util.List">
-        select p.* from picture p where p.cid in
-        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
-            #{item}
-        </foreach>
+    <select id="recommendcat"  resultType="Picture">
+        select p.* from picture p where p.fid is null order by rand()
     </select>
 
-    <select id="recommendflower" parameterType="java.util.List" resultType="java.util.List">
-        select p.* from picture p where p.fid in
-        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
-            #{item}
-        </foreach>
+    <select id="recommendflower"  resultType="Picture">
+        select p.* from picture p where p.cid is null order by rand()
     </select>
 
     <select id="findcid" resultType="Integer">

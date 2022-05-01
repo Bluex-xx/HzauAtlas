@@ -29,4 +29,6 @@ public class Picture implements Serializable {
     private Integer type;
     @Transient
     private String name;
+    @Transient
+    private Integer status;
 }

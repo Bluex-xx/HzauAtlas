@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.atlas.dao.CatDAO">
     <select id="recommend" resultMap="Catr">
-        select cid,sum(liked) liked,name from picture where fid is null group by cid order by liked desc limit 10
+        select cid,sum(liked) liked,name from picture where fid is null group by cid order by liked desc
     </select>
 
     <resultMap id="Catr" type="com.atlas.entity.Cat">
@@ -13,6 +13,25 @@
         <result column="liked" property="liked"></result>
         <collection property="picture" select="findpicture" column="cid"></collection>
     </resultMap>
+
+    <select id="recommend2" resultMap="Catr2">
+        select * from picture where fid is null order by rand()
+    </select>
+
+    <resultMap id="Catr2" type="com.atlas.entity.Cat">
+        <id column="store"></id>
+        <result column="cid" property="cid"></result>
+        <result column="name" property="name"></result>
+        <collection property="picture" ofType="com.atlas.entity.Picture">
+            <result property="pid" column="pid"></result>
+            <result property="store" column="store"></result>
+            <result column="liked" property="liked"></result>
+        </collection>
+    </resultMap>
+
+    <select id="findpicture3" resultType="Picture">
+        select * from picture where cid=#{cid}
+    </select>
 
     <select id="catdetail" parameterType="Picture" resultMap="Catmap">
         select c.* from cat c,picture p where pid=#{pid} and p.cid=c.cid
@@ -76,6 +95,6 @@
     </resultMap>
 
     <select id="findpicture2" resultType="Picture">
-        select * from picture where name=#{name} limit 1
+        select * from picture where name=#{name} order by rand() limit 1
     </select>
 </mapper>

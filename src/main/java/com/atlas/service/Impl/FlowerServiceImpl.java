@@ -21,6 +21,11 @@ public class FlowerServiceImpl implements FlowerService {
     }
 
     @Override
+    public List<Flower> recommend2() {
+        return flowerDAO.recommend2();
+    }
+
+    @Override
     public Flower flowerdetail(Picture picture) {
         return flowerDAO.flowerdetail(picture);
     }

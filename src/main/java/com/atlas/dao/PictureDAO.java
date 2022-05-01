@@ -10,8 +10,8 @@ import java.util.Set;
 
 @Mapper
 public interface PictureDAO {
-    List<Picture> recommendcat(List<Integer> integerList);
-    List<Picture> recommendflower(List<Integer> integerList);
+    List<Picture> recommendcat();
+    List<Picture> recommendflower();
     public int likept(Picture picture);
     public int likept2(Picture picture);
     List<Picture> catdetail(Integer cid);

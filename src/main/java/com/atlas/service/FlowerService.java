@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface FlowerService {
     List<Flower> recommend();
+    List<Flower> recommend2();
     Flower flowerdetail(Picture picture);
     List<Flower> search(Picture picture);
     List<Flower> classifyvariety(Flower flower);

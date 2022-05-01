@@ -30,13 +30,13 @@ public class PictureServiceImpl implements PictureService {
     }
 
     @Override
-    public List<Picture> recommendcat(List<Integer> integerList) {
-        return pictureDAO.recommendcat(integerList);
+    public List<Picture> recommendcat() {
+        return pictureDAO.recommendcat();
     }
 
     @Override
-    public List<Picture> recommendflower(List<Integer> integerList) {
-        return pictureDAO.recommendflower(integerList);
+    public List<Picture> recommendflower() {
+        return pictureDAO.recommendflower();
     }
 
     @Override

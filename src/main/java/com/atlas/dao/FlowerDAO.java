@@ -10,6 +10,7 @@ import java.util.List;
 @Mapper
 public interface FlowerDAO {
     List<Flower> recommend();
+    List<Flower> recommend2();
     Flower flowerdetail(Picture picture);
     List<Flower> search(Picture picture);
     List<Flower> classifyflorescence(Flower flower);

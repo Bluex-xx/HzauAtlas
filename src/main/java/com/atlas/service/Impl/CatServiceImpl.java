@@ -20,6 +20,11 @@ public class CatServiceImpl implements CatService {
     }
 
     @Override
+    public List<Cat> recommend2() {
+        return catDAO.recommend2();
+    }
+
+    @Override
     public Cat catdetail(Picture picture) {
         return catDAO.catdetail(picture);
     }

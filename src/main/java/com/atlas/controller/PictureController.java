@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.ListOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,9 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/picture")
@@ -49,10 +48,8 @@ public class PictureController {
         System.out.println(isMember + " " + BooleanUtil.isFalse(isMember));
         if (BooleanUtil.isFalse(isMember)) {
             int row = pictureService.likept(picture);
-            if (row != 0) {
-                stringRedisTemplate.opsForSet().add(key, picture.getPid().toString());
-                return "操作成功";
-            }
+            stringRedisTemplate.opsForSet().add(key, picture.getPid().toString());
+            return "操作成功";
         } else {
             int row = pictureService.likept2(picture);
             stringRedisTemplate.opsForSet().remove(key, picture.getPid().toString());
@@ -74,45 +71,77 @@ public class PictureController {
     public void updaterecommend(){
         List<Cat> catList= catService.recommend();
         List<Flower> flowerList= flowerService.recommend();
+        List<Cat> catrList= catService.recommend2();
+        List<Flower> flowerrList= flowerService.recommend2();
         String key1="cat";
         String key2="flower";
+        String key3="catr";
+        String key4="flowerr";
         redisTemplate.delete(key1);
         redisTemplate.delete(key2);
+        redisTemplate.delete(key3);
+        redisTemplate.delete(key4);
         ListOperations<String,Cat> catListOperations= redisTemplate.opsForList();
         ListOperations<String,Flower> flowerListOperations= redisTemplate.opsForList();
+        ListOperations<String,Cat> catrListOperations= redisTemplate.opsForList();
+        ListOperations<String,Flower> flowerrListOperations= redisTemplate.opsForList();
+
         catListOperations.rightPushAll(key1,catList);
         flowerListOperations.rightPushAll(key2,flowerList);
+        catrListOperations.rightPushAll(key3,catrList);
+        flowerrListOperations.rightPushAll(key4,flowerrList);
         System.out.println(new Date());
     }
 
     //主页推荐，根据点赞数量进行排序
     @ResponseBody
     @PostMapping("/recommend")
-    public List<Object> recommend(@RequestBody Picture picture){
-        List<Cat> catList= new ArrayList<>();
-        List<Flower> flowerList= new ArrayList<>();
-        List<Object> objectList=new ArrayList<>();
-        ListOperations<String,Cat> catListOperations= redisTemplate.opsForList();
-        ListOperations<String,Flower> flowerListOperations= redisTemplate.opsForList();
+    public List<Object> recommend(@RequestBody Picture picture) {
+        List<Cat> catList = new ArrayList<>();
+        List<Flower> flowerList = new ArrayList<>();
+        //List<Picture> pictureList = new ArrayList<>();
+        List<Object> objectList = new ArrayList<>();
+        ListOperations<String, Cat> catListOperations = redisTemplate.opsForList();
+        ListOperations<String, Flower> flowerListOperations = redisTemplate.opsForList();
+        //ListOperations<String, Picture> pictureListOperations = redisTemplate.opsForList();
 
-        if(picture.getType()==1){
-            catList= catListOperations.range("cat",0,-1);
-            catList.forEach(cat -> {
-                cat.getPicture().setUid(picture.getUid());
-                isliked(cat.getPicture());
-        });
-           objectList=new ArrayList<>(catList);
-        }else{
-            flowerList= flowerListOperations.range("flower",0,-1);
-            flowerList.forEach(flower -> {
-                flower.getPicture().setUid(picture.getUid());
-                isliked(flower.getPicture());
-            });
-            objectList=new ArrayList<>(flowerList);
+        if (picture.getStatus() == 1) {
+            if (picture.getType() == 1) {
+                catList = catListOperations.range("cat", 0, -1);
+                catList.forEach(cat -> {
+                    cat.getPicture().setUid(picture.getUid());
+                    isliked(cat.getPicture());
+                });
+                objectList = new ArrayList<>(catList);
+            } else {
+                flowerList = flowerListOperations.range("flower", 0, -1);
+                flowerList.forEach(flower -> {
+                    flower.getPicture().setUid(picture.getUid());
+                    isliked(flower.getPicture());
+                });
+                objectList = new ArrayList<>(flowerList);
+            }
+        } else {
+            if (picture.getType() == 1) {
+                catList = catListOperations.range("catr", 0, -1);
+                catList.forEach(cat -> {
+                    //List<Picture> pictureList=cat.getPictureList();
+                    //System.out.println(pictureList);
+                    cat.getPicture().setUid(picture.getUid());
+                    isliked(cat.getPicture());
+                });
+                objectList = new ArrayList<>(catList);
+            } else {
+                flowerList = flowerListOperations.range("flowerr", 0, -1);
+                flowerList.forEach(flower -> {
+                    flower.getPicture().setUid(picture.getUid());
+                    isliked(flower.getPicture());
+                });
+                objectList = new ArrayList<>(flowerList);
+            }
         }
-           return objectList;
+        return objectList;
     }
-
     //用户界面
     @ResponseBody
     @PostMapping("/user")

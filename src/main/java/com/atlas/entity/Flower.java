@@ -30,4 +30,6 @@ public class Flower implements Serializable {
     private String information;
     @Transient
     private List<Comment> commentList;
+    @Transient
+    private Integer liked;
 }

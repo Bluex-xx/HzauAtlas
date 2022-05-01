@@ -41,9 +41,9 @@ public class CommentController {
     @PostMapping("/delete")
     public int delete(@RequestBody Comment comment){
         List<String> stringList=new ArrayList<>();
-        stringList.add("ojCNE5EjDKNmHIHcqFA6XlZlqbtw");
-        stringList.add("ojCNE5FeIUwJA6NGXXhIbbw6w6Js");
-        stringList.add("ojCNE5DMzUQRB33ATwaWisklwKcI");
+        stringList.add("6");
+        stringList.add("7");
+        stringList.add("4");
         if(stringList.contains(comment.getUid())){
             return commentService.delete2(comment);
         }else{

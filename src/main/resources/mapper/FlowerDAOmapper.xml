@@ -4,14 +4,34 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.atlas.dao.FlowerDAO">
     <select id="recommend" resultMap="Flowerr">
-        select sum(liked) liked,name from picture where cid is null group by name order by liked desc limit 10
+        select sum(liked) liked,name from picture where cid is null group by name order by liked desc
     </select>
 
     <resultMap id="Flowerr" type="com.atlas.entity.Flower">
         <id column="fid" property="fid"></id>
         <result column="name" property="name"></result>
+        <result column="liked" property="liked"></result>
         <collection property="picture" select="findpicture2" column="name"></collection>
     </resultMap>
+
+    <select id="recommend2" resultMap="Flowerr2">
+        select * from picture where cid is null order by rand()
+    </select>
+
+    <resultMap id="Flowerr2" type="com.atlas.entity.Flower">
+        <id column="store"></id>
+        <result column="fid" property="fid"></result>
+        <result column="name" property="name"></result>
+        <collection property="picture" ofType="com.atlas.entity.Picture">
+            <result property="pid" column="pid"></result>
+            <result property="store" column="store"></result>
+            <result property="liked" column="liked"></result>
+        </collection>
+    </resultMap>
+
+    <select id="findpicture3" resultType="Picture">
+        select * from picture where name=#{name}
+    </select>
 
     <select id="flowerdetail" parameterType="Picture" resultMap="Flowermap">
         select f.* from flower f,picture p where p.pid=#{pid} and p.fid=f.fid
@@ -24,7 +44,7 @@
         <result property="color" column="color"></result>
         <result property="department" column="department"></result>
         <result property="allegory" column="allegory"></result>
-        <collection property="pictureList" ofType="com.atlas.entity.Picture" select="flowerdetail2" column="fid">
+        <collection property="pictureList" ofType="com.atlas.entity.Picture" select="flowerdetail2" column="name">
         </collection>
         <collection property="commentList" ofType="com.atlas.entity.Comment" select="findcomment" column="fid">
             <result property="profile_photo" column="profile_photo"></result>
@@ -37,7 +57,7 @@
     </select>
 
     <select id="flowerdetail2"  resultType="Picture">
-        select * from picture where fid=#{fid}
+        select * from picture where name=#{name}
     </select>
 
     <select id="search" parameterType="Picture" resultType="Flower">
@@ -121,7 +141,7 @@
     </resultMap>
 
     <select id="findpicture2" resultType="Picture">
-        select * from picture where name=#{name} limit 1
+        select * from picture where name=#{name} order by rand() limit 1
     </select>
 
     <resultMap id="findv2" type="com.atlas.entity.Flower">

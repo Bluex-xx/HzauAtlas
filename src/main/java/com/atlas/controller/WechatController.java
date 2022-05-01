@@ -59,10 +59,11 @@ public class WechatController {
                 //user1.setToken(token);
                 //System.out.println(user1);
                 User user2=userService.find(user1);
+                System.out.println(user2);
                 if(user2==null){
-                    int uid=userService.insert(user1);
-                    user1.setUid(uid);
-                    map.put("user",user1);
+                    int id=userService.insert(user1);
+                    User user3=userService.find(user1);
+                    map.put("user",user3);
                 }else{
                     userService.update(user1);
                     user1.setUid(user2.getUid());

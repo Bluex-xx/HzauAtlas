@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface CatService {
     List<Cat> recommend();
+    List<Cat> recommend2();
     Cat catdetail(Picture picture);
     List<Cat> search(Picture picture);
     List<Cat> findall(Cat cat);

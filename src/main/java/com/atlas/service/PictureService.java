@@ -8,8 +8,8 @@ import java.util.Set;
 public interface PictureService {
     public int likept(Picture picture);
     public int likept2(Picture picture);
-    List<Picture> recommendcat(List<Integer> integerList);
-    List<Picture> recommendflower(List<Integer> integerList);
+    List<Picture> recommendcat();
+    List<Picture> recommendflower();
     List<Picture> catdetail(Integer cid);
     List<Picture> flowerdetail(Integer fid);
     List<Picture> findbypidcat(List<String> stringList);

@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.atlas.dao.UserDAO">
     <select id="find" resultType="User">
-        select user.profile_photo,user.name from user where openid=#{openid};
+        select profile_photo,name,uid from user where openid=#{openid};
     </select>
 
     <update id="update" parameterType="User">
