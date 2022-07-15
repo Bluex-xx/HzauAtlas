@@ -1,4 +1,4 @@
-const baseUrl = 'https://api.somecute.cn/'
+const baseUrl = 'https://127.0.0.1/'//填写java服务部署的服务器地址
 
 var tokenStr;
 
